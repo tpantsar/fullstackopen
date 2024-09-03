@@ -1,10 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-const Header = ({ title }) => {
-  return <h2>{title}</h2>;
-};
-
 const Person = ({ person }) => {
   return (
     <li>
@@ -13,12 +9,56 @@ const Person = ({ person }) => {
   );
 };
 
+const Filter = ({ nameFilter, setNameFilter }) => {
+  return (
+    <div>
+      filter shown with
+      <input
+        value={nameFilter}
+        onChange={(e) => setNameFilter(e.target.value)}
+      />
+    </div>
+  );
+};
+
+const PersonForm = (props) => {
+  const { addPerson, newName, handleNewPerson, newNumber, handleNewNumber } =
+    props;
+  return (
+    <form onSubmit={addPerson}>
+      <div>
+        name:
+        <input value={newName} onChange={handleNewPerson} />
+      </div>
+      <div>
+        number:
+        <input value={newNumber} onChange={handleNewNumber} />
+      </div>
+      <button type="submit">add</button>
+    </form>
+  );
+};
+
+const Persons = ({ persons, nameFilter }) => {
+  const personFilter = persons.filter((person) =>
+    person.name.toLowerCase().includes(nameFilter.toLowerCase())
+  );
+
+  return (
+    <ul>
+      {personFilter.map((person) => (
+        <Person key={person.id} person={person} />
+      ))}
+    </ul>
+  );
+};
+
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456" },
-    { name: "Ada Lovelace", number: "39-44-5323523" },
-    { name: "Dan Abramov", number: "12-43-234345" },
-    { name: "Mary Poppendieck", number: "39-23-6423122" },
+    { id: 1, name: "Arto Hellas", number: "040-123456" },
+    { id: 2, name: "Ada Lovelace", number: "39-44-5323523" },
+    { id: 3, name: "Dan Abramov", number: "12-43-234345" },
+    { id: 4, name: "Mary Poppendieck", number: "39-23-6423122" },
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
@@ -60,38 +100,22 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
-  const personFilter = persons.filter((person) =>
-    person.name.toLowerCase().includes(nameFilter.toLowerCase())
-  );
+  const formProps = {
+    addPerson,
+    newName,
+    handleNewPerson,
+    newNumber,
+    handleNewNumber,
+  };
 
   return (
     <div>
-      <Header title="Phonebook" />
-      <div>
-        filter shown with
-        <input
-          value={nameFilter}
-          onChange={(e) => setNameFilter(e.target.value)}
-        />
-      </div>
+      <h2>Phonebook</h2>
+      <Filter nameFilter={nameFilter} setNameFilter={setNameFilter} />
       <h3>Add new person</h3>
-      <form onSubmit={addPerson}>
-        <div>
-          name:
-          <input value={newName} onChange={handleNewPerson} />
-        </div>
-        <div>
-          number:
-          <input value={newNumber} onChange={handleNewNumber} />
-        </div>
-        <button type="submit">add</button>
-      </form>
-      <Header title="Numbers" />
-      <ul>
-        {personFilter.map((person) => (
-          <Person key={person.name} person={person} />
-        ))}
-      </ul>
+      <PersonForm {...formProps} />
+      <h3>Numbers</h3>
+      <Persons persons={persons} nameFilter={nameFilter} />
     </div>
   );
 };
