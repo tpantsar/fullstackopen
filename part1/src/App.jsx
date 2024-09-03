@@ -9,11 +9,14 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const Display = ({ text, counter, text2 }) => {
+const StatisticLine = ({ text, counter, text2 }) => {
   return (
-    <div>
-      {text} {counter} {text2}
-    </div>
+    <tr>
+      <td>{text}</td>
+      <td>
+        {counter} {text2}
+      </td>
+    </tr>
   );
 };
 
@@ -26,12 +29,16 @@ const Statistics = (props) => {
       <Header title={title} />
       {feedbackGiven ? (
         <div>
-          <Display text="good" counter={good} />
-          <Display text="neutral" counter={neutral} />
-          <Display text="bad" counter={bad} />
-          <Display text="all" counter={total} />
-          <Display text="average" counter={(good - bad) / total} />
-          <Display text="positive" counter={(good / total) * 100} text2="%" />
+          <StatisticLine text="good" counter={good} />
+          <StatisticLine text="neutral" counter={neutral} />
+          <StatisticLine text="bad" counter={bad} />
+          <StatisticLine text="all" counter={total} />
+          <StatisticLine text="average" counter={(good - bad) / total} />
+          <StatisticLine
+            text="positive"
+            counter={(good / total) * 100}
+            text2="%"
+          />
         </div>
       ) : (
         <div>No feedback given</div>
