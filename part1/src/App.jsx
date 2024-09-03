@@ -9,10 +9,10 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const Display = ({ text, counter }) => {
+const Display = ({ text, counter, text2 }) => {
   return (
     <div>
-      {text} {counter}
+      {text} {counter} {text2}
     </div>
   );
 };
@@ -21,6 +21,7 @@ const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const total = good + neutral + bad;
 
   const header = "Give feedback";
   const statistics = "Statistics";
@@ -50,6 +51,9 @@ const App = () => {
       <Display text="good" counter={good} />
       <Display text="neutral" counter={neutral} />
       <Display text="bad" counter={bad} />
+      <Display text="all" counter={total} />
+      <Display text="average" counter={(good - bad) / total} />
+      <Display text="positive" counter={(good / total) * 100} text2="%" />
     </div>
   );
 };
