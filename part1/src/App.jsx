@@ -53,6 +53,17 @@ const App = () => {
       <Button handleClick={changeAnecdote} text="Next anecdote" />
       <div>{anecdotes[selected]}</div>
       <div>Votes: {votes[selected]}</div>
+      <Header title="Anecdote with most votes" />
+      <div>
+        {Math.max(...votes) === 0 ? (
+          <div>No votes given</div>
+        ) : (
+          <div>
+            {anecdotes[votes.indexOf(Math.max(...votes))]}
+            <div>Votes: {Math.max(...votes)}</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
