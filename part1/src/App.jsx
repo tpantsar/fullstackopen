@@ -23,6 +23,16 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
 
+  const points = Array(anecdotes.length).fill(0);
+  const [votes, setVotes] = useState(points);
+  console.log(votes);
+
+  const voteAnecdote = () => {
+    const copy = [...votes];
+    copy[selected] += 1;
+    setVotes(copy);
+  };
+
   // Select random anecdote from the list but make sure it's not the same as the current one
   const changeAnecdote = () => {
     // Prevent infinite loop if there's only one anecdote
@@ -39,8 +49,10 @@ const App = () => {
   return (
     <div>
       <Header title="Anecdotes" />
+      <Button handleClick={voteAnecdote} text="Vote" />
       <Button handleClick={changeAnecdote} text="Next anecdote" />
       <div>{anecdotes[selected]}</div>
+      <div>Votes: {votes[selected]}</div>
     </div>
   );
 };
