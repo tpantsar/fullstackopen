@@ -19,14 +19,23 @@ const Display = ({ text, counter, text2 }) => {
 
 const Statistics = (props) => {
   const { good, neutral, bad, total } = props.props;
+  const feedbackGiven = good || neutral || bad;
+  const title = "Statistics";
   return (
     <div>
-      <Display text="good" counter={good} />
-      <Display text="neutral" counter={neutral} />
-      <Display text="bad" counter={bad} />
-      <Display text="all" counter={total} />
-      <Display text="average" counter={(good - bad) / total} />
-      <Display text="positive" counter={(good / total) * 100} text2="%" />
+      <Header title={title} />
+      {feedbackGiven ? (
+        <div>
+          <Display text="good" counter={good} />
+          <Display text="neutral" counter={neutral} />
+          <Display text="bad" counter={bad} />
+          <Display text="all" counter={total} />
+          <Display text="average" counter={(good - bad) / total} />
+          <Display text="positive" counter={(good / total) * 100} text2="%" />
+        </div>
+      ) : (
+        <div>No feedback given</div>
+      )}
     </div>
   );
 };
@@ -38,9 +47,7 @@ const App = () => {
 
   const total = good + neutral + bad;
   const stats = { good, neutral, bad, total };
-
-  const header = "Give feedback";
-  const statistics = "Statistics";
+  const title = "Give feedback";
 
   const increaseGoodByOne = () => {
     console.log("clicked good button");
@@ -59,11 +66,10 @@ const App = () => {
 
   return (
     <div>
-      <Header title={header} />
+      <Header title={title} />
       <Button handleClick={increaseGoodByOne} text="good" />
       <Button handleClick={increaseNeutralByOne} text="neutral" />
       <Button handleClick={increaseBadByOne} text="bad" />
-      <Header title={statistics} />
       <Statistics props={stats} />
     </div>
   );
