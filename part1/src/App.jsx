@@ -17,11 +17,27 @@ const Display = ({ text, counter, text2 }) => {
   );
 };
 
+const Statistics = (props) => {
+  const { good, neutral, bad, total } = props.props;
+  return (
+    <div>
+      <Display text="good" counter={good} />
+      <Display text="neutral" counter={neutral} />
+      <Display text="bad" counter={bad} />
+      <Display text="all" counter={total} />
+      <Display text="average" counter={(good - bad) / total} />
+      <Display text="positive" counter={(good / total) * 100} text2="%" />
+    </div>
+  );
+};
+
 const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+
   const total = good + neutral + bad;
+  const stats = { good, neutral, bad, total };
 
   const header = "Give feedback";
   const statistics = "Statistics";
@@ -48,12 +64,7 @@ const App = () => {
       <Button handleClick={increaseNeutralByOne} text="neutral" />
       <Button handleClick={increaseBadByOne} text="bad" />
       <Header title={statistics} />
-      <Display text="good" counter={good} />
-      <Display text="neutral" counter={neutral} />
-      <Display text="bad" counter={bad} />
-      <Display text="all" counter={total} />
-      <Display text="average" counter={(good - bad) / total} />
-      <Display text="positive" counter={(good / total) * 100} text2="%" />
+      <Statistics props={stats} />
     </div>
   );
 };
