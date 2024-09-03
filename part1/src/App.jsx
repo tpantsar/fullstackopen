@@ -28,18 +28,20 @@ const Statistics = (props) => {
     <div>
       <Header title={title} />
       {feedbackGiven ? (
-        <div>
-          <StatisticLine text="good" counter={good} />
-          <StatisticLine text="neutral" counter={neutral} />
-          <StatisticLine text="bad" counter={bad} />
-          <StatisticLine text="all" counter={total} />
-          <StatisticLine text="average" counter={(good - bad) / total} />
-          <StatisticLine
-            text="positive"
-            counter={(good / total) * 100}
-            text2="%"
-          />
-        </div>
+        <table>
+          <tbody>
+            <StatisticLine text="good" counter={good} />
+            <StatisticLine text="neutral" counter={neutral} />
+            <StatisticLine text="bad" counter={bad} />
+            <StatisticLine text="all" counter={total} />
+            <StatisticLine text="average" counter={(good - bad) / total} />
+            <StatisticLine
+              text="positive"
+              counter={(good / total) * 100}
+              text2="%"
+            />
+          </tbody>
+        </table>
       ) : (
         <div>No feedback given</div>
       )}
