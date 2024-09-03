@@ -9,77 +9,38 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const StatisticLine = ({ text, counter, text2 }) => {
-  return (
-    <tr>
-      <td>{text}</td>
-      <td>
-        {counter} {text2}
-      </td>
-    </tr>
-  );
-};
-
-const Statistics = (props) => {
-  const { good, neutral, bad, total } = props.props;
-  const feedbackGiven = good || neutral || bad;
-  const title = "Statistics";
-  return (
-    <div>
-      <Header title={title} />
-      {feedbackGiven ? (
-        <table>
-          <tbody>
-            <StatisticLine text="good" counter={good} />
-            <StatisticLine text="neutral" counter={neutral} />
-            <StatisticLine text="bad" counter={bad} />
-            <StatisticLine text="all" counter={total} />
-            <StatisticLine text="average" counter={(good - bad) / total} />
-            <StatisticLine
-              text="positive"
-              counter={(good / total) * 100}
-              text2="%"
-            />
-          </tbody>
-        </table>
-      ) : (
-        <div>No feedback given</div>
-      )}
-    </div>
-  );
-};
-
 const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const anecdotes = [
+    "If it hurts, do it more often.",
+    "Adding manpower to a late software project makes it later!",
+    "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
+    "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+    "Premature optimization is the root of all evil.",
+    "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
+    "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.",
+    "The only way to go fast, is to go well.",
+  ];
 
-  const total = good + neutral + bad;
-  const stats = { good, neutral, bad, total };
-  const title = "Give feedback";
+  const [selected, setSelected] = useState(0);
 
-  const increaseGoodByOne = () => {
-    console.log("clicked good button");
-    setGood(good + 1);
-  };
-
-  const increaseNeutralByOne = () => {
-    console.log("clicked neutral button");
-    setNeutral(neutral + 1);
-  };
-
-  const increaseBadByOne = () => {
-    console.log("clicked bad button");
-    setBad(bad + 1);
+  // Select random anecdote from the list but make sure it's not the same as the current one
+  const changeAnecdote = () => {
+    // Prevent infinite loop if there's only one anecdote
+    if (anecdotes.length === 1) {
+      return;
+    }
+    let randomAnecdote;
+    do {
+      randomAnecdote = Math.floor(Math.random() * anecdotes.length);
+    } while (randomAnecdote === selected);
+    setSelected(randomAnecdote);
   };
 
   return (
     <div>
-      <Header title={title} />
-      <Button handleClick={increaseGoodByOne} text="good" />
-      <Button handleClick={increaseNeutralByOne} text="neutral" />
-      <Button handleClick={increaseBadByOne} text="bad" />
-      <Statistics props={stats} />
+      <Header title="Anecdotes" />
+      <Button handleClick={changeAnecdote} text="Next anecdote" />
+      <div>{anecdotes[selected]}</div>
     </div>
   );
 };
