@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import personService from "./services/persons";
 
 const Person = ({ person }) => {
   return (
@@ -59,9 +60,10 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const baseUrl = "http://localhost:3001/persons";
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
+    axios.get(baseUrl).then((response) => {
       setPersons(response.data);
     });
   }, []);
@@ -87,9 +89,11 @@ const App = () => {
       number: newNumber,
     };
 
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNewNumber("");
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
 
     console.log("persons", persons);
   };
