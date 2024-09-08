@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import axios from "axios";
 import { useEffect, useState } from "react";
 import personService from "./services/persons";
 
@@ -60,11 +59,10 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-  const baseUrl = "http://localhost:3001/persons";
 
   useEffect(() => {
-    axios.get(baseUrl).then((response) => {
-      setPersons(response.data);
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
