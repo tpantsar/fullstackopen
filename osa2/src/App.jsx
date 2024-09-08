@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 import personService from "./services/persons";
 
-const Person = ({ person }) => {
+const Person = ({ person, removePerson }) => {
   return (
     <li>
       {person.name} {person.number}
+      <button onClick={() => removePerson(person.id)}>delete</button>
     </li>
   );
 };
@@ -40,7 +41,7 @@ const PersonForm = (props) => {
   );
 };
 
-const Persons = ({ persons, nameFilter }) => {
+const Persons = ({ persons, nameFilter, removePerson }) => {
   const personFilter = persons.filter((person) =>
     person.name.toLowerCase().includes(nameFilter.toLowerCase())
   );
@@ -48,7 +49,7 @@ const Persons = ({ persons, nameFilter }) => {
   return (
     <ul>
       {personFilter.map((person) => (
-        <Person key={person.id} person={person} />
+        <Person key={person.id} person={person} removePerson={removePerson} />
       ))}
     </ul>
   );
@@ -96,6 +97,16 @@ const App = () => {
     console.log("persons", persons);
   };
 
+  const removePerson = (id) => {
+    const person = persons.find((p) => p.id === id);
+    const result = window.confirm(`Delete ${person.name}?`);
+    if (result) {
+      personService.remove(id).then(() => {
+        setPersons(persons.filter((p) => p.id !== id));
+      });
+    }
+  };
+
   const handleNewPerson = (event) => {
     setNewName(event.target.value);
   };
@@ -119,7 +130,11 @@ const App = () => {
       <h3>Add new person</h3>
       <PersonForm {...formProps} />
       <h3>Numbers</h3>
-      <Persons persons={persons} nameFilter={nameFilter} />
+      <Persons
+        persons={persons}
+        nameFilter={nameFilter}
+        removePerson={removePerson}
+      />
     </div>
   );
 };
