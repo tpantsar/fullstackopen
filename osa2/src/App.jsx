@@ -78,10 +78,22 @@ const App = () => {
       alert("Number cannot be empty");
       return;
     }
-    if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
+
+    // Check if the person is already in the phonebook
+    if (persons.some((p) => p.name === newName)) {
+      const result = window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (result) {
+        const person = persons.find((p) => p.name === newName);
+        updatePerson(person.id, {
+          ...person,
+          number: newNumber,
+        });
+      }
       return;
     }
+
     const personObject = {
       id: persons.length + 1,
       name: newName,
@@ -95,6 +107,14 @@ const App = () => {
     });
 
     console.log("persons", persons);
+  };
+
+  const updatePerson = (id, personObject) => {
+    personService.update(id, personObject).then((returnedPerson) => {
+      setPersons(
+        persons.map((person) => (person.id !== id ? person : returnedPerson))
+      );
+    });
   };
 
   const removePerson = (id) => {
