@@ -14,6 +14,34 @@ const Filter = ({ countryFilter, setCountryFilter }) => {
   );
 };
 
+// Show detailed country information
+const CountryInfo = ({ country }) => {
+  console.log("CountryInfo:", country);
+  console.log("flag url:", country.flags.png);
+
+  const imageStyle = {
+    height: "100%",
+    width: "auto",
+    border: "1px solid black",
+  };
+
+  return (
+    <div>
+      <h2>{country.name.common}</h2>
+      <div>Capital: {country.capital[0]}</div>
+      <div>Area: {country.area} km²</div>
+      <div>Population: {country.population}</div>
+      <h3>Languages</h3>
+      <ul>
+        {Object.values(country.languages).map((language) => (
+          <li key={language}>{language}</li>
+        ))}
+      </ul>
+      <img style={imageStyle} src={country.flags.png} alt="Country flag" />
+    </div>
+  );
+};
+
 const Countries = ({ countries, countryFilter }) => {
   const filteredCountries = countries.filter((country) =>
     country.name.common.toLowerCase().includes(countryFilter.toLowerCase())
@@ -24,10 +52,7 @@ const Countries = ({ countries, countryFilter }) => {
       {filteredCountries.length > 10 ? (
         <p>Too many matches, specify another filter</p>
       ) : filteredCountries.length === 1 ? (
-        <Country
-          key={filteredCountries[0].name.common}
-          name={filteredCountries[0].name.common}
-        />
+        <CountryInfo country={filteredCountries[0]} />
       ) : (
         <ul>
           {filteredCountries.map((country) => (
