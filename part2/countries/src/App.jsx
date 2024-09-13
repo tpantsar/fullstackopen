@@ -1,41 +1,91 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const Filter = ({ countryFilter, setCountryFilter }) => {
+  return (
+    <div>
+      Country:{" "}
+      <input
+        value={countryFilter}
+        onChange={(e) => setCountryFilter(e.target.value)}
+      />
+    </div>
+  );
+};
+
+const Countries = ({ countries, countryFilter, setCountryList }) => {
+  console.log("first country:", countries[0]);
+  console.log("country:", countries[0].name.common);
+  const filter = countries.filter((country) =>
+    country.name.common.toLowerCase().includes(countryFilter.toLowerCase())
+  );
+
+  console.log("filter:", filter);
+
+  filter.map((country) => {
+    console.log("country:", country.name.common);
+  });
+
+  return (
+    <ul>
+      {filter.map((country) => {
+        <Country key={country.name.common} />;
+      })}
+    </ul>
+  );
+};
+
+const Country = ({ country }) => {
+  return <li>{country.name}</li>;
+};
+
 const App = () => {
-  const [value, setValue] = useState("");
-  const [rates, setRates] = useState({});
-  const [currency, setCurrency] = useState(null);
+  const [allCountries, setAllCountries] = useState([]);
+  const [country, setCountryFilter] = useState("");
+  const [countryList, setCountryList] = useState({});
 
+  // Fetch all countries once
   useEffect(() => {
-    console.log("effect run, currency is now", currency);
+    console.log("effect run, fetched all countries.");
 
-    // skip if currency is not defined
-    if (currency) {
-      console.log("fetching exchange rates...");
-      axios
-        .get(`https://open.er-api.com/v6/latest/${currency}`)
-        .then((response) => {
-          setRates(response.data.rates);
-        });
-    }
-  }, [currency]);
+    console.log("fetching all countries ...");
+    axios
+      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
+      .then((response) => {
+        const countries = response.data;
+        setAllCountries(countries);
+        console.log("all countries fetched:", countries.length);
+      });
+  }, []);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  // useEffect(() => {
+  //   console.log("effect run, country is now", country);
+  //   // skip if country is not defined
+  //   if (country) {
+  //     console.log("fetching countries ...");
+  //     axios
+  //       .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country}`)
+  //       .then((response) => {
+  //         setCountries(response.data.name.common);
+  //       });
+  //   }
+  // }, [country]);
 
-  const onSearch = (event) => {
-    event.preventDefault();
-    setCurrency(value);
-  };
+  if (allCountries.length === 0) {
+    return <div>Loading countries...</div>;
+  }
 
   return (
     <div>
-      <form onSubmit={onSearch}>
-        currency: <input value={value} onChange={handleChange} />
-        <button type="submit">exchange rate</button>
-      </form>
-      <pre>{JSON.stringify(rates, null, 2)}</pre>
+      <h2>Countries</h2>
+      <Filter countryFilter={country} setCountryFilter={setCountryFilter} />
+      <pre>{JSON.stringify(countryList, null, 2)}</pre>
+      <Countries
+        countries={allCountries}
+        countryFilter={country}
+        setCountryList={setCountryList}
+      />
     </div>
   );
 };
