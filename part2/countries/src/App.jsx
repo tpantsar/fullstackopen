@@ -14,63 +14,51 @@ const Filter = ({ countryFilter, setCountryFilter }) => {
   );
 };
 
-const Countries = ({ countries, countryFilter, setCountryList }) => {
-  console.log("first country:", countries[0]);
-  console.log("country:", countries[0].name.common);
-  const filter = countries.filter((country) =>
+const Countries = ({ countries, countryFilter }) => {
+  const filteredCountries = countries.filter((country) =>
     country.name.common.toLowerCase().includes(countryFilter.toLowerCase())
   );
 
-  console.log("filter:", filter);
-
-  filter.map((country) => {
-    console.log("country:", country.name.common);
-  });
-
   return (
-    <ul>
-      {filter.map((country) => {
-        <Country key={country.name.common} />;
-      })}
-    </ul>
+    <div>
+      {filteredCountries.length > 10 ? (
+        <p>Too many matches, specify another filter</p>
+      ) : filteredCountries.length === 1 ? (
+        <Country
+          key={filteredCountries[0].name.common}
+          name={filteredCountries[0].name.common}
+        />
+      ) : (
+        <ul>
+          {filteredCountries.map((country) => (
+            <Country key={country.name.common} name={country.name.common} />
+          ))}
+        </ul>
+      )}
+    </div>
   );
 };
 
-const Country = ({ country }) => {
-  return <li>{country.name}</li>;
+const Country = ({ name }) => {
+  return <li>{name}</li>;
 };
 
 const App = () => {
   const [allCountries, setAllCountries] = useState([]);
-  const [country, setCountryFilter] = useState("");
-  const [countryList, setCountryList] = useState({});
+  const [countryFilter, setCountryFilter] = useState("");
 
   // Fetch all countries once
   useEffect(() => {
-    console.log("effect run, fetched all countries.");
-
-    console.log("fetching all countries ...");
     axios
       .get("https://studies.cs.helsinki.fi/restcountries/api/all")
       .then((response) => {
-        const countries = response.data;
-        setAllCountries(countries);
-        console.log("all countries fetched:", countries.length);
+        setAllCountries(response.data);
+        console.log("all countries fetched:", response.data.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching countries:", error);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log("effect run, country is now", country);
-  //   // skip if country is not defined
-  //   if (country) {
-  //     console.log("fetching countries ...");
-  //     axios
-  //       .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country}`)
-  //       .then((response) => {
-  //         setCountries(response.data.name.common);
-  //       });
-  //   }
-  // }, [country]);
 
   if (allCountries.length === 0) {
     return <div>Loading countries...</div>;
@@ -79,13 +67,11 @@ const App = () => {
   return (
     <div>
       <h2>Countries</h2>
-      <Filter countryFilter={country} setCountryFilter={setCountryFilter} />
-      <pre>{JSON.stringify(countryList, null, 2)}</pre>
-      <Countries
-        countries={allCountries}
-        countryFilter={country}
-        setCountryList={setCountryList}
+      <Filter
+        countryFilter={countryFilter}
+        setCountryFilter={setCountryFilter}
       />
+      <Countries countries={allCountries} countryFilter={countryFilter} />
     </div>
   );
 };
