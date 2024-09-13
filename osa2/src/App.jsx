@@ -2,6 +2,14 @@
 import { useEffect, useState } from "react";
 import personService from "./services/persons";
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+
+  return <div className="success">{message}</div>;
+};
+
 const Person = ({ person, removePerson }) => {
   return (
     <li>
@@ -60,6 +68,9 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  const timeout = 5000;
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -102,6 +113,14 @@ const App = () => {
 
     personService.create(personObject).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson));
+
+      // Display notification
+      setSuccessMessage(`Added ${newName}`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, timeout);
+
+      // Reset the input fields
       setNewName("");
       setNewNumber("");
     });
@@ -114,6 +133,12 @@ const App = () => {
       setPersons(
         persons.map((person) => (person.id !== id ? person : returnedPerson))
       );
+
+      // Display notification
+      setSuccessMessage(`Updated ${personObject.name}`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, timeout);
     });
   };
 
@@ -123,6 +148,12 @@ const App = () => {
     if (result) {
       personService.remove(id).then(() => {
         setPersons(persons.filter((p) => p.id !== id));
+
+        // Display notification
+        setSuccessMessage(`Deleted ${person.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, timeout);
       });
     }
   };
@@ -146,6 +177,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} />
       <Filter nameFilter={nameFilter} setNameFilter={setNameFilter} />
       <h3>Add new person</h3>
       <PersonForm {...formProps} />
