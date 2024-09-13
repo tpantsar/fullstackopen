@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import axios from "axios";
+import weatherService from "./services/openmeteo";
 
 const Filter = ({ countryFilter, setCountryFilter }) => {
   return (
@@ -16,6 +17,8 @@ const Filter = ({ countryFilter, setCountryFilter }) => {
 
 // Show detailed information from one country
 const CountryInfo = ({ country }) => {
+  const [weather, setWeather] = useState(null);
+
   console.log("CountryInfo:", country);
   console.log("flag url:", country.flags.png);
 
@@ -24,6 +27,24 @@ const CountryInfo = ({ country }) => {
     width: "auto",
     border: "1px solid black",
   };
+
+  const latitude = country.capitalInfo.latlng[0];
+  const longitude = country.capitalInfo.latlng[1];
+
+  console.log("Latitude:", latitude);
+  console.log("Longitude:", longitude);
+
+  useEffect(() => {
+    weatherService
+      .getWeatherData(latitude, longitude)
+      .then((response) => {
+        console.log("Weather data:", response.data);
+        setWeather(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching weather data:", error);
+      });
+  }, [latitude, longitude]);
 
   return (
     <div>
