@@ -14,7 +14,7 @@ const Filter = ({ countryFilter, setCountryFilter }) => {
   );
 };
 
-// Show detailed country information
+// Show detailed information from one country
 const CountryInfo = ({ country }) => {
   console.log("CountryInfo:", country);
   console.log("flag url:", country.flags.png);
@@ -42,7 +42,7 @@ const CountryInfo = ({ country }) => {
   );
 };
 
-const Countries = ({ countries, countryFilter }) => {
+const Countries = ({ countries, countryFilter, setCountryFilter }) => {
   const filteredCountries = countries.filter((country) =>
     country.name.common.toLowerCase().includes(countryFilter.toLowerCase())
   );
@@ -56,7 +56,11 @@ const Countries = ({ countries, countryFilter }) => {
       ) : (
         <ul>
           {filteredCountries.map((country) => (
-            <Country key={country.name.common} name={country.name.common} />
+            <Country
+              key={country.name.common}
+              name={country.name.common}
+              setCountryFilter={setCountryFilter}
+            />
           ))}
         </ul>
       )}
@@ -64,8 +68,13 @@ const Countries = ({ countries, countryFilter }) => {
   );
 };
 
-const Country = ({ name }) => {
-  return <li>{name}</li>;
+const Country = ({ name, setCountryFilter }) => {
+  return (
+    <li>
+      {name}
+      <button onClick={() => setCountryFilter(name)}>show</button>
+    </li>
+  );
 };
 
 const App = () => {
@@ -96,7 +105,11 @@ const App = () => {
         countryFilter={countryFilter}
         setCountryFilter={setCountryFilter}
       />
-      <Countries countries={allCountries} countryFilter={countryFilter} />
+      <Countries
+        countries={allCountries}
+        countryFilter={countryFilter}
+        setCountryFilter={setCountryFilter}
+      />
     </div>
   );
 };
