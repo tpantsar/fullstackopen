@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import personService from "./services/persons";
 
-const Notification = ({ message }) => {
+const Notification = ({ message, type }) => {
   if (message === null) {
     return null;
   }
-
+  if (type === "error") {
+    return <div className="error">{message}</div>;
+  }
   return <div className="success">{message}</div>;
 };
 
@@ -69,6 +71,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const timeout = 5000;
 
@@ -129,17 +132,28 @@ const App = () => {
   };
 
   const updatePerson = (id, personObject) => {
-    personService.update(id, personObject).then((returnedPerson) => {
-      setPersons(
-        persons.map((person) => (person.id !== id ? person : returnedPerson))
-      );
+    personService
+      .update(id, personObject)
+      .then((returnedPerson) => {
+        setPersons(
+          persons.map((person) => (person.id !== id ? person : returnedPerson))
+        );
 
-      // Display notification
-      setSuccessMessage(`Updated ${personObject.name}`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, timeout);
-    });
+        // Display notification
+        setSuccessMessage(`Updated ${personObject.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, timeout);
+      })
+      .catch(() => {
+        setErrorMessage(
+          `Person '${personObject.name}' has already been removed from the server`
+        );
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, timeout);
+        setPersons(persons.filter((p) => p.id !== id));
+      });
   };
 
   const removePerson = (id) => {
@@ -177,7 +191,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMessage} />
+      <Notification message={successMessage} type={"success"} />
+      <Notification message={errorMessage} type={"error"} />
       <Filter nameFilter={nameFilter} setNameFilter={setNameFilter} />
       <h3>Add new person</h3>
       <PersonForm {...formProps} />
