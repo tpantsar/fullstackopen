@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import weatherService from "./services/openmeteo";
+import weatherCodes from "./json/wmo_weather_codes.json";
 
 const Filter = ({ countryFilter, setCountryFilter }) => {
   return (
@@ -15,18 +16,27 @@ const Filter = ({ countryFilter, setCountryFilter }) => {
   );
 };
 
+const imageStyle = {
+  height: "100%",
+  width: "auto",
+  border: "1px solid black",
+};
+
 // Show detailed information from one country
 const CountryInfo = ({ country }) => {
+  return (
+    <>
+      <CountryBasicInfo country={country} />
+      <CountryWeather country={country} />
+    </>
+  );
+};
+
+const CountryWeather = ({ country }) => {
   const [weather, setWeather] = useState(null);
-
-  console.log("CountryInfo:", country);
-  console.log("flag url:", country.flags.png);
-
-  const imageStyle = {
-    height: "100%",
-    width: "auto",
-    border: "1px solid black",
-  };
+  const [dayOrNight, setDayOrNight] = useState("");
+  const [weatherDescription, setWeatherDescription] = useState("");
+  const [weatherImage, setWeatherImage] = useState("");
 
   const latitude = country.capitalInfo.latlng[0];
   const longitude = country.capitalInfo.latlng[1];
@@ -38,13 +48,62 @@ const CountryInfo = ({ country }) => {
     weatherService
       .getWeatherData(latitude, longitude)
       .then((response) => {
-        console.log("Weather data:", response.data);
-        setWeather(response.data);
+        console.log("Weather data:", response);
+        setWeather(response);
       })
       .catch((error) => {
         console.error("Error fetching weather data:", error);
       });
   }, [latitude, longitude]);
+
+  useEffect(() => {
+    if (weather) {
+      const weatherCode = weather.current.weatherCode;
+      const isDay = weather.current.isDay; // [1=day, 0=night]
+      const dayOrNight = isDay === 1 ? "day" : "night";
+
+      const weatherDescription =
+        weatherCodes[weatherCode][dayOrNight].description;
+      const weatherImage = weatherCodes[weatherCode][dayOrNight].image;
+
+      console.log("weatherDescription:", weatherDescription);
+      console.log("weatherImage:", weatherImage);
+
+      setDayOrNight(dayOrNight);
+      setWeatherDescription(weatherDescription);
+      setWeatherImage(weatherImage);
+    }
+  }, [weather]);
+
+  if (weather === null) {
+    return <div>Loading weather data...</div>;
+  }
+
+  return (
+    <div>
+      <h3>Weather in {country.capital[0]}:</h3>
+      <div>
+        {weatherDescription} ({dayOrNight})
+      </div>
+      <img style={imageStyle} src={weatherImage} alt="Weather icon" />
+      <div>
+        Temperature: {weather.current.temperature2m}{" "}
+        {weather.current_units.temperature_2m}
+      </div>
+      <div>
+        Rain: {weather.current.rain} {weather.current_units.rain}
+      </div>
+      <div>
+        Wind: {weather.current.windSpeed10m}{" "}
+        {weather.current_units.wind_speed_10m}
+      </div>
+    </div>
+  );
+};
+
+const CountryBasicInfo = ({ country }) => {
+  console.log("CountryInfo:", country);
+  console.log("flag url:", country.flags.png);
 
   return (
     <div>
