@@ -1,0 +1,23 @@
+{
+  "latitude": 52.52000045776367,
+  "longitude": 13.419998168945312,
+  "timezone": null,
+  "timezoneAbbreviation": null,
+  "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C",
+    "is_day": "",
+    "rain": "mm",
+    "weather_code": "wmo code",
+    "wind_speed_10m": "m/s"
+  },
+  "current": {
+    "time": "2024-09-14T08:45:00.000Z",
+    "temperature2m": "14.1",
+    "isDay": 1,
+    "rain": 0,
+    "weatherCode": 3,
+    "windSpeed10m": 5.440587997436523
+  }
+}
