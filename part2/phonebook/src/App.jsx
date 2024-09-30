@@ -73,7 +73,7 @@ const App = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const timeout = 5000;
+  const TIMEOUT = 5000;
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -113,19 +113,28 @@ const App = () => {
       number: newNumber,
     };
 
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
+    personService
+      .create(personObject)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
 
-      // Display notification
-      setSuccessMessage(`Added ${newName}`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, timeout);
+        // Display notification
+        setSuccessMessage(`Added ${newName}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, TIMEOUT);
 
-      // Reset the input fields
-      setNewName("");
-      setNewNumber("");
-    });
+        // Reset the input fields
+        setNewName("");
+        setNewNumber("");
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        setErrorMessage(error.response.data.error);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, TIMEOUT);
+      });
 
     console.log("persons", persons);
   };
@@ -142,7 +151,7 @@ const App = () => {
         setSuccessMessage(`Updated ${personObject.name}`);
         setTimeout(() => {
           setSuccessMessage(null);
-        }, timeout);
+        }, TIMEOUT);
       })
       .catch(() => {
         setErrorMessage(
@@ -150,7 +159,7 @@ const App = () => {
         );
         setTimeout(() => {
           setErrorMessage(null);
-        }, timeout);
+        }, TIMEOUT);
         setPersons(persons.filter((p) => p.id !== id));
       });
   };
@@ -166,7 +175,7 @@ const App = () => {
         setSuccessMessage(`Deleted ${person.name}`);
         setTimeout(() => {
           setSuccessMessage(null);
-        }, timeout);
+        }, TIMEOUT);
       });
     }
   };
