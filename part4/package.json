@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
     "format": "prettier --write \"**/*.js\"",
     "merge": "git checkout main && git pull && git merge dev && git push origin main && git checkout dev"
   },
