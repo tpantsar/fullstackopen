@@ -122,14 +122,18 @@ describe('favorite blog', () => {
   })
 })
 
-describe('favorite blog', () => {
+describe('author with most blogs', () => {
   test('when list has one author with max blogs, return the author with most blogs', () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs)
     const expected = {
       author: 'Robert C. Martin',
       blogs: 3,
     }
-    console.log(result)
-    assert.strictEqual(result, expected)
+    assert.deepStrictEqual(result, expected)
+  })
+
+  test('when blog list is empty, return null', () => {
+    const result = listHelper.mostBlogs([])
+    assert.strictEqual(result, null)
   })
 })
