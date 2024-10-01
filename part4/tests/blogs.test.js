@@ -85,7 +85,7 @@ describe('total likes', () => {
 
 describe('favorite blog', () => {
   const testBlog = {
-    _id: '5a422b3a1b54a676234d17f9',
+    _id: '5a422b3a1b54a676234d13h8',
     title: 'test-title',
     author: 'test-author',
     url: 'test-url',
@@ -119,5 +119,17 @@ describe('favorite blog', () => {
     listWithMultipleBlogs.push(testBlog)
     const result = listHelper.favoriteBlog(listWithMultipleBlogs)
     assert.deepStrictEqual(result, testBlog)
+  })
+})
+
+describe('favorite blog', () => {
+  test('when list has one author with max blogs, return the author with most blogs', () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs)
+    const expected = {
+      author: 'Robert C. Martin',
+      blogs: 3,
+    }
+    console.log(result)
+    assert.strictEqual(result, expected)
   })
 })
