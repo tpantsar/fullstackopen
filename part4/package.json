@@ -9,7 +9,7 @@
     "test": "cross-env NODE_ENV=test node --test",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.js\"",
-    "merge": "git checkout main && git pull && git merge dev && npm run format && git push origin main && git checkout dev"
+    "merge": "git checkout main && git pull && git merge dev && npm run format && git push origin main && git checkout dev && git add ."
   },
   "author": "tpantsar",
   "license": "ISC",
