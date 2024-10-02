@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -19,6 +20,21 @@ const initialBlogs = [
   },
 ]
 
+const initialUsers = [
+  {
+    username: 'pesusieni',
+    name: 'Paavo Pesusieni',
+    blogs: [],
+    id: '66fd3dec1dd5a3ff7d17362b',
+  },
+  {
+    username: 'ankka',
+    name: 'Aku Ankka',
+    blogs: [],
+    id: 'f467jd83mnd983mf93j3hfkj',
+  },
+]
+
 const nonExistingId = async () => {
   const blog = new Blog({ title: 'willremovethissoon' })
   await blog.save()
@@ -27,13 +43,49 @@ const nonExistingId = async () => {
   return blog._id.toString()
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map((user) => user.toJSON())
+}
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map((blog) => blog.toJSON())
 }
 
+const createUser = async (api, username, name, password) => {
+  const userResponse = await api
+    .post('/api/users')
+    .send({
+      username: username,
+      name: name,
+      password: password,
+    })
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  return userResponse.body
+}
+
+const getValidToken = async (api, username, password) => {
+  const loginResponse = await api
+    .post('/api/login')
+    .send({
+      username: username,
+      password: password,
+    })
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  return loginResponse.body.token
+}
+
 module.exports = {
   initialBlogs,
+  initialUsers,
   nonExistingId,
+  usersInDb,
   blogsInDb,
+  createUser,
+  getValidToken,
 }
