@@ -70,8 +70,9 @@ test('a valid blog can be added', async () => {
   assert(titles.includes('async/await simplifies making async calls'))
 })
 
-test('blog without title is not added', async () => {
+test('blog without token is not added', async () => {
   const newBlog = {
+    title: 'async/await simplifies making async calls',
     author: 'test-author',
     url: 'test-url',
     likes: 7,
@@ -84,14 +85,32 @@ test('blog without title is not added', async () => {
   assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
+test('blog without title is not added', async () => {
+  const token = await helper.getValidToken(api, 'test-username', 'test-password')
+
+  const newBlog = {
+    author: 'test-author',
+    url: 'test-url',
+    likes: 7,
+  }
+
+  await api.post('/api/blogs').set('Authorization', `Bearer ${token}`).send(newBlog).expect(400)
+
+  const response = await api.get('/api/blogs')
+
+  assert.strictEqual(response.body.length, helper.initialBlogs.length)
+})
+
 test('blog without url is not added', async () => {
+  const token = await helper.getValidToken(api, 'test-username', 'test-password')
+
   const newBlog = {
     title: 'async/await simplifies making async calls',
     author: 'test-author',
     likes: 7,
   }
 
-  await api.post('/api/blogs').send(newBlog).expect(400)
+  await api.post('/api/blogs').set('Authorization', `Bearer ${token}`).send(newBlog).expect(400)
 
   const response = await api.get('/api/blogs')
 
