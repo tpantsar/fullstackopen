@@ -113,6 +113,24 @@ test('a specific blog can be viewed', async () => {
   assert.deepStrictEqual(resultBlog.body, blogToView)
 })
 
+test('a blog can be updated', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+
+  const updatedBlog = { ...blogToUpdate, likes: 10 }
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const updatedBlogAtEnd = blogsAtEnd[0]
+
+  assert.strictEqual(updatedBlogAtEnd.likes, 10)
+})
+
 test('a blog can be deleted', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
