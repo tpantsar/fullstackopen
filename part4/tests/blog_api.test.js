@@ -11,12 +11,8 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
+  await Blog.insertMany(helper.initialBlogs)
+  console.log('cleared database')
 })
 
 test('blogs are returned as json', async () => {
@@ -26,10 +22,10 @@ test('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('there are two blogs', async () => {
+test('there are two initial blogs', async () => {
   const response = await api.get('/api/blogs')
 
-  assert.strictEqual(response.body.length, helper.initialBlogs.length)
+  assert.strictEqual(response.body.length, 2)
 })
 
 test('the first blog is about React patterns', async () => {
@@ -72,6 +68,37 @@ test('blog without title is not added', async () => {
   const response = await api.get('/api/blogs')
 
   assert.strictEqual(response.body.length, helper.initialBlogs.length)
+})
+
+test('blog without url is not added', async () => {
+  const newBlog = {
+    title: 'async/await simplifies making async calls',
+    author: 'test-author',
+    likes: 7,
+  }
+
+  await api.post('/api/blogs').send(newBlog).expect(400)
+
+  const response = await api.get('/api/blogs')
+
+  assert.strictEqual(response.body.length, helper.initialBlogs.length)
+})
+
+test('adding a blog without likes defaults to 0 likes', async () => {
+  const newBlog = {
+    title: 'async/await simplifies making async calls',
+    author: 'test-author',
+    url: 'test-url',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+    .expect((response) => {
+      assert.strictEqual(response.body.likes, 0)
+    })
 })
 
 test('a specific blog can be viewed', async () => {

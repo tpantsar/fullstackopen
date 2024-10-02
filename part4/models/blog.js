@@ -6,8 +6,14 @@ const blogSchema = mongoose.Schema({
     required: true,
   },
   author: String,
-  url: String,
-  likes: Number,
+  url: {
+    type: String,
+    required: true,
+  },
+  likes: {
+    type: Number,
+    default: 0,
+  },
 })
 
 blogSchema.set('toJSON', {
