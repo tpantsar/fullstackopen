@@ -30,6 +30,7 @@ app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(middleware.requestLogger)
+app.use(middleware.tokenExtractor)
 
 // Register the route handlers
 app.use('/api/blogs', blogsRouter)
