@@ -214,7 +214,7 @@ describe('when there is initially one user at db', () => {
     assert(usernames.includes(newUser.username))
   })
 
-  test('creation fails with proper statuscode and message if username already taken', async () => {
+  test('creation fails with proper statuscode and message if username is already taken', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
@@ -230,7 +230,49 @@ describe('when there is initially one user at db', () => {
       .expect('Content-Type', /application\/json/)
 
     const usersAtEnd = await helper.usersInDb()
-    assert(result.body.error.includes('expected `username` to be unique'))
+    assert(result.body.error.includes('Username is already taken'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if username is less than 3 characters long', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'ab',
+      name: 'Superuser',
+      password: 'salainen',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert(result.body.error.includes('Username must be at least 3 characters long'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if password is less than 3 characters long', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'new-username',
+      name: 'Superuser',
+      password: 'ab',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert(result.body.error.includes('Password must be at least 3 characters long'))
 
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
   })
