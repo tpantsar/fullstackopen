@@ -172,6 +172,8 @@ test('a blog can be deleted', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
 
+  console.log('blogToDelete:', blogToDelete)
+
   await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()
