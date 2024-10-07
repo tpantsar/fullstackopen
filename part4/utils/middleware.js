@@ -12,9 +12,10 @@ const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization')
   if (authorization && authorization.startsWith('Bearer ')) {
     request.token = authorization.replace('Bearer ', '')
+    logger.info('token found')
   } else {
     request.token = null
-    logger.error('token missing or invalid')
+    logger.info('no token found')
   }
   next()
 }

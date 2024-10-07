@@ -1,4 +1,5 @@
 /* express-async-errors package handles the try-catch blocks in routes */
+const logger = require('../utils/logger')
 const jwt = require('jsonwebtoken')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
@@ -59,13 +60,19 @@ blogsRouter.delete('/:id', async (request, response) => {
   }
   const user = await User.findById(decodedToken.id)
   const blog = await Blog.findById(request.params.id)
+  console.log('blog:', blog)
 
-  console.log('blog.user:', blog.user)
-  console.log('user._id:', user._id)
+  if (!blog) {
+    return response.status(404).send({ error: 'Blog not found' })
+  }
 
+  logger.info('blog.user:', blog.user)
+  logger.info('user._id:', user._id)
+
+  // Check if the user is the creator of the blog
   if (blog.user.toString() === user._id.toString()) {
-    await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    await Blog.findByIdAndDelete(request.params.id)
+    response.status(204).send({ message: 'Blog successfully deleted' })
   } else {
     response.status(401).json({ error: 'unauthorized' })
   }
