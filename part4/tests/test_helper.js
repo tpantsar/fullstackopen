@@ -67,6 +67,22 @@ const createUser = async (api, username, name, password) => {
   return userResponse.body
 }
 
+const createBlog = async (api, token, title, author, url, likes) => {
+  const blogResponse = await api
+    .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      title: title,
+      author: author,
+      url: url,
+      likes: likes,
+    })
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  return blogResponse.body
+}
+
 const getValidToken = async (api, username, password) => {
   const loginResponse = await api
     .post('/api/login')
@@ -87,5 +103,6 @@ module.exports = {
   usersInDb,
   blogsInDb,
   createUser,
+  createBlog,
   getValidToken,
 }

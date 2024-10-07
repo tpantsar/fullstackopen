@@ -20,18 +20,18 @@ blogsRouter.get('/:id', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const body = request.body
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
+  const { title, author, url, likes } = request.body
+  const user = request.user
+
+  if (!user) {
+    return response.status(401).json({ error: 'Unauthorized' })
   }
-  const user = await User.findById(decodedToken.id)
 
   const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes || 0,
+    title: title,
+    author: author,
+    url: url,
+    likes: likes || 0,
     user: user._id,
   })
 
@@ -54,16 +54,17 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
-  const user = await User.findById(decodedToken.id)
+  const user = request.user
   const blog = await Blog.findById(request.params.id)
+
+  console.log('user:', user)
   console.log('blog:', blog)
 
+  if (!user) {
+    return response.status(401).json({ error: 'Unauthorized' })
+  }
   if (!blog) {
-    return response.status(404).send({ error: 'Blog not found' })
+    return response.status(404).json({ error: 'Blog not found' })
   }
 
   logger.info('blog.user:', blog.user)
@@ -72,9 +73,9 @@ blogsRouter.delete('/:id', async (request, response) => {
   // Check if the user is the creator of the blog
   if (blog.user.toString() === user._id.toString()) {
     await Blog.findByIdAndDelete(request.params.id)
-    response.status(204).send({ message: 'Blog successfully deleted' })
+    response.status(204).json({ message: 'Blog successfully deleted' })
   } else {
-    response.status(401).json({ error: 'unauthorized' })
+    response.status(401).json({ error: 'Unauthorized' })
   }
 })
 

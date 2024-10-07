@@ -19,7 +19,7 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs)
   await User.insertMany(helper.initialUsers)
 
-  // Create a user for testing
+  // Create a user and blog for testing
   await helper.createUser(api, 'test-username', 'test-name', 'test-password')
 
   console.log('resetted database')
@@ -78,7 +78,7 @@ test('blog without token is not added', async () => {
     likes: 7,
   }
 
-  await api.post('/api/blogs').send(newBlog).expect(400)
+  await api.post('/api/blogs').send(newBlog).expect(401)
 
   const response = await api.get('/api/blogs')
 
@@ -168,20 +168,33 @@ test('a blog can be updated', async () => {
   assert.strictEqual(updatedBlogAtEnd.likes, 10)
 })
 
-test('a blog can be deleted', async () => {
-  const blogsAtStart = await helper.blogsInDb()
-  const blogToDelete = blogsAtStart[0]
+test('blog can be deleted', async () => {
+  const token = await helper.getValidToken(api, 'test-username', 'test-password')
+
+  // Create a blog that is deleted later
+  const blogToDelete = await helper.createBlog(
+    api,
+    token,
+    'test-title',
+    'test-author',
+    'test-url',
+    7
+  )
 
   console.log('blogToDelete:', blogToDelete)
+  const blogsAtStart = await helper.blogsInDb()
 
-  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .set('Authorization', `Bearer ${token}`)
+    .send(blogToDelete)
+    .expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()
-
   const titles = blogsAtEnd.map((blog) => blog.title)
-  assert(!titles.includes(blogToDelete.title))
 
-  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+  assert(!titles.includes(blogToDelete.title))
+  assert.strictEqual(blogsAtStart.length - 1, blogsAtEnd.length)
 })
 
 describe('when there is initially one user at db', () => {
