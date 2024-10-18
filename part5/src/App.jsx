@@ -59,15 +59,27 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong credentials')
+      setErrorMessage('incorrect username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
   }
 
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    window.localStorage.removeItem('loggedBlogUser')
+    setUser(null)
+    setUsername('')
+    setPassword('')
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
+      <div>
+        <h2>Log in to application</h2>
+      </div>
+      <Notification message={errorMessage} />
       <div>
         username
         <input
@@ -93,23 +105,25 @@ const App = () => {
   const blogForm = () => (
     <form onSubmit={addBlog}>
       <input value={newBlog} onChange={handleBlogChange} />
-      <button type="submit">save</button>
+      <input value={newBlog} onChange={handleBlogChange} />
+      <input value={newBlog} onChange={handleBlogChange} />
+      <button type="submit">create</button>
     </form>
   )
+
+  if (user === null) {
+    return loginForm()
+  }
 
   return (
     <div>
       <h2>Blogs</h2>
       <Notification message={errorMessage} />
-
-      {!user && loginForm()}
-
-      {user && (
-        <div>
-          <p>{user.name} logged in</p>
-          {blogForm()}
-        </div>
-      )}
+      <p>
+        {user.name} logged in
+        <button onClick={handleLogout}>Log out</button>
+      </p>
+      {blogForm()}
 
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
