@@ -18,7 +18,6 @@ const tokenExtractor = (request, response, next) => {
     logger.info('token found')
   } else {
     request.token = null
-    logger.info('no token found')
   }
   next()
 }
