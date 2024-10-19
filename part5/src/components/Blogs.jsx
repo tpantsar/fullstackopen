@@ -2,7 +2,7 @@ import '../styles/Blogs.css'
 
 const Blogs = ({ blogs }) => (
   <>
-    <h3>Blogs</h3>
+    <h3>Blogs: {blogs.length}</h3>
     <table className="table">
       <thead>
         <tr>
