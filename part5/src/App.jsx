@@ -9,7 +9,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationType, setNotificationType] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -35,12 +36,21 @@ const App = () => {
       url: url,
     }
 
-    blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-    })
+    blogService
+      .create(blogObject)
+      .then((returnedBlog) => {
+        setBlogs(blogs.concat(returnedBlog))
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+        handleNotification(
+          `${returnedBlog.author} created a new blog "${returnedBlog.title}"`,
+          'success'
+        )
+      })
+      .catch((error) => {
+        handleNotification('error creating blog', 'error')
+      })
   }
 
   const handleLogin = async (event) => {
@@ -57,12 +67,19 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      handleNotification('login successful', 'success')
     } catch (exception) {
-      setErrorMessage('incorrect username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      handleNotification('incorrect username or password', 'error')
     }
+  }
+
+  const handleNotification = (message, type) => {
+    setNotificationMessage(message)
+    setNotificationType(type)
+    setTimeout(() => {
+      setNotificationMessage(null)
+      setNotificationType(null)
+    }, 5000)
   }
 
   const handleLogout = async (event) => {
@@ -71,6 +88,7 @@ const App = () => {
     setUser(null)
     setUsername('')
     setPassword('')
+    handleNotification('logout successful', 'success')
   }
 
   const loginForm = () => (
@@ -78,7 +96,7 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
       </div>
-      <Notification message={errorMessage} />
+      <Notification message={notificationMessage} type={notificationType} />
       <div>
         username
         <input
@@ -143,7 +161,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
+      <Notification message={notificationMessage} type={notificationType} />
       <p>
         {user.name} logged in
         <button onClick={handleLogout}>Log out</button>
