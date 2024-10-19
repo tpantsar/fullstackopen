@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Blog from './components/Blog'
+import Blogs from './components/Blogs'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -102,31 +102,39 @@ const App = () => {
   )
 
   const createBlogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        Title
-        <input
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        Author
-        <input
-          type="text"
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        Url
-        <input type="text" value={url} name="Url" onChange={({ target }) => setUrl(target.value)} />
-      </div>
-      <button type="submit">create</button>
-    </form>
+    <>
+      <h3>New blog</h3>
+      <form onSubmit={addBlog}>
+        <div>
+          Title
+          <input
+            type="text"
+            value={title}
+            name="Title"
+            onChange={({ target }) => setTitle(target.value)}
+          />
+        </div>
+        <div>
+          Author
+          <input
+            type="text"
+            value={author}
+            name="Author"
+            onChange={({ target }) => setAuthor(target.value)}
+          />
+        </div>
+        <div>
+          Url
+          <input
+            type="text"
+            value={url}
+            name="Url"
+            onChange={({ target }) => setUrl(target.value)}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </>
   )
 
   if (user === null) {
@@ -135,7 +143,6 @@ const App = () => {
 
   return (
     <div>
-      <h2>Blogs</h2>
       <Notification message={errorMessage} />
       <p>
         {user.name} logged in
@@ -143,9 +150,7 @@ const App = () => {
       </p>
       {createBlogForm()}
 
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      <Blogs blogs={blogs} />
     </div>
   )
 }
