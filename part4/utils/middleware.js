@@ -37,7 +37,6 @@ const userExtractor = async (request, response, next) => {
     logger.info('user found')
   } else {
     request.user = null
-    logger.info('user not found')
   }
 
   next()
