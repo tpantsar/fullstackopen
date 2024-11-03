@@ -1,8 +1,13 @@
 import { useState } from 'react'
 import '../styles/Blog.css'
 
-const Blog = ({ blog, likeBlog }) => {
+const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
+
+  // Whether logged user is the author of the blog.
+  // Used to show/hide the delete button.
+  const isAuthor = user && user.username === blog.user.username
+  console.log(user.username, blog.user.username, isAuthor)
 
   const toggleDetails = () => {
     setDetailsVisible(!detailsVisible)
@@ -11,8 +16,15 @@ const Blog = ({ blog, likeBlog }) => {
   return (
     <div className="blog">
       <div className="blog-header">
-        <span>{blog.title}</span>
-        <button onClick={toggleDetails}>{detailsVisible ? 'Hide' : 'View'}</button>
+        <div>{blog.title}</div>
+        <div>
+          {isAuthor && (
+            <button className="delete-button" onClick={() => deleteBlog(blog)}>
+              Delete
+            </button>
+          )}
+          <button onClick={toggleDetails}>{detailsVisible ? 'Hide' : 'View'}</button>
+        </div>
       </div>
       {detailsVisible && (
         <div className="blog-details">

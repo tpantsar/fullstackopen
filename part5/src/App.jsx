@@ -25,6 +25,7 @@ const App = () => {
     }
   }, [])
 
+  // Fetch blogs from the server when the component is rendered
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
@@ -46,7 +47,26 @@ const App = () => {
       })
   }
 
-  const handleBlogLike = (blog) => {
+  const deleteBlog = (blog) => {
+    console.log('Delete clicked')
+    console.log('Blog:', blog)
+    if (window.confirm(`Remove blog '${blog.title}' by ${blog.author}?`)) {
+      blogService
+        .remove(blog.id)
+        .then((removedBlog) => {
+          console.log('Blog removed:', removedBlog)
+          const updatedBlogs = blogs.filter((b) => b.id !== blog.id)
+          setBlogs(updatedBlogs)
+          handleNotification(`Blog '${blog.title}' by ${blog.author} removed`, 'success')
+        })
+        .catch((error) => {
+          console.error('Error deleting blog:', error)
+          handleNotification('Error deleting blog', 'error')
+        })
+    }
+  }
+
+  const likeBlog = (blog) => {
     console.log('Like clicked')
     console.log('Blog:', blog)
     blogService
@@ -56,7 +76,7 @@ const App = () => {
       })
       .then((updatedBlog) => {
         console.log('Blog updated:', updatedBlog)
-        const updatedBlogs = blogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b))
+        const updatedBlogs = blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
         setBlogs(updatedBlogs)
       })
       .catch((error) => {
@@ -144,7 +164,7 @@ const App = () => {
       <Togglable buttonLabel="New blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      <Blogs blogs={blogs} likeBlog={handleBlogLike} />
+      <Blogs blogs={blogs} user={user} likeBlog={likeBlog} deleteBlog={deleteBlog} />
     </div>
   )
 }

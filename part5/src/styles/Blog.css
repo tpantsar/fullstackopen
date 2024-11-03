@@ -34,6 +34,22 @@
   background-color: #28a745;
 }
 
+.blog-likes-container button:hover {
+  background-color: #218838;
+}
+
+.delete-button {
+  background-color: #dc3545;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.blog-header button {
+  margin-left: 8px;
+}
+
 .blog-details p {
   margin: 4px 0;
 }
