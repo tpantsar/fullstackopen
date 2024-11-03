@@ -117,7 +117,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="app-container">
       <Notification message={notificationMessage} type={notificationType} />
       <p>
         {user.name} logged in

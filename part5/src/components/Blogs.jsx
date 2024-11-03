@@ -1,27 +1,12 @@
-import '../styles/Blogs.css'
+import Blog from './Blog'
 
 const Blogs = ({ blogs }) => (
-  <>
+  <div>
     <h3>Blogs: {blogs.length}</h3>
-    <table className="table">
-      <thead>
-        <tr>
-          <th className="th">Title</th>
-          <th className="th">Author</th>
-          <th className="th">URL</th>
-        </tr>
-      </thead>
-      <tbody>
-        {blogs.map((blog) => (
-          <tr key={blog.id}>
-            <td className="td">{blog.title}</td>
-            <td className="td">{blog.author}</td>
-            <td className="td">{blog.url}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </>
+    {blogs.map((blog) => (
+      <Blog key={blog.id} blog={blog} />
+    ))}
+  </div>
 )
 
 export default Blogs

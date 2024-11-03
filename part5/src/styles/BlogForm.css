@@ -1,4 +1,3 @@
-/* BlogForm.css */
 .blog-form-container {
   max-width: 400px;
   padding: 10px;
@@ -11,6 +10,8 @@
 .blog-form-container h3 {
   text-align: center;
   color: #333;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 .blog-form-container form {
@@ -19,17 +20,20 @@
 }
 
 .blog-form-container form div {
-  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .blog-form-container form label {
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 500;
+  margin-bottom: 0;
   display: block;
+  width: 20%;
 }
 
 .blog-form-container form input {
-  width: 100%;
+  width: 80%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;

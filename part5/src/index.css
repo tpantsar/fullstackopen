@@ -1,0 +1,6 @@
+.app-container {
+  display: block;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 80%;
+}
