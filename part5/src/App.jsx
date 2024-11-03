@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import BlogForm from './components/BlogForm'
 import Blogs from './components/Blogs'
+import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
@@ -104,15 +105,6 @@ const App = () => {
     }
   }
 
-  const handleNotification = (message, type) => {
-    setNotificationMessage(message)
-    setNotificationType(type)
-    setTimeout(() => {
-      setNotificationMessage(null)
-      setNotificationType(null)
-    }, 5000)
-  }
-
   const handleLogout = async (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogUser')
@@ -122,36 +114,27 @@ const App = () => {
     handleNotification('logout successful', 'success')
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        <h2>Log in to application</h2>
-      </div>
-      <Notification message={notificationMessage} type={notificationType} />
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-  )
+  const handleNotification = (message, type) => {
+    setNotificationMessage(message)
+    setNotificationType(type)
+    setTimeout(() => {
+      setNotificationMessage(null)
+      setNotificationType(null)
+    }, 5000)
+  }
 
   if (user === null) {
-    return loginForm()
+    return (
+      <LoginForm
+        handleLogin={handleLogin}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        username={username}
+        password={password}
+        notificationMessage={notificationMessage}
+        notificationType={notificationType}
+      />
+    )
   }
 
   return (

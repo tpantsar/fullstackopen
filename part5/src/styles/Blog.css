@@ -21,6 +21,7 @@
 .blog-details {
   margin-top: 16px;
   padding: 8px;
+  padding-bottom: 0;
   border-top: 1px solid #ccc;
 }
 
