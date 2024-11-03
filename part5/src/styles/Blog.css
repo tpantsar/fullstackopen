@@ -13,10 +13,25 @@
   align-items: center;
 }
 
+.blog-header {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 .blog-details {
   margin-top: 16px;
   padding: 8px;
   border-top: 1px solid #ccc;
+}
+
+.blog-likes-container {
+  display: flex;
+  align-items: center;
+}
+
+.blog-likes-container button {
+  margin-left: 8px;
+  background-color: #28a745;
 }
 
 .blog-details p {
