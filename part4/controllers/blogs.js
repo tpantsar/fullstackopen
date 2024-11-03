@@ -44,10 +44,18 @@ blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
 
   const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
     likes: body.likes,
   }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  // Populate the user field with the username, name, and id
+  // This ensures that frontend has access to complete user information when the blog is updated
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true }).populate(
+    'user',
+    { username: 1, name: 1, id: 1 }
+  )
   response.json(updatedBlog)
 })
 
