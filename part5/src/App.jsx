@@ -46,6 +46,24 @@ const App = () => {
       })
   }
 
+  const handleBlogLike = (blog) => {
+    console.log('Like clicked')
+    console.log('Blog:', blog)
+    blogService
+      .update(blog.id, {
+        ...blog,
+        likes: blog.likes + 1,
+      })
+      .then((updatedBlog) => {
+        console.log('Blog updated:', updatedBlog)
+        const updatedBlogs = blogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b))
+        setBlogs(updatedBlogs)
+      })
+      .catch((error) => {
+        console.error('Error updating blog:', error)
+      })
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -126,7 +144,7 @@ const App = () => {
       <Togglable buttonLabel="New blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      <Blogs blogs={blogs} />
+      <Blogs blogs={blogs} likeBlog={handleBlogLike} />
     </div>
   )
 }
