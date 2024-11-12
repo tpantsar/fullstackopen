@@ -4,22 +4,22 @@ import BlogForm from './BlogForm'
 
 test('<BlogForm /> updates parent state and calls onSubmit', async () => {
   const user = userEvent.setup()
-  const createBlog = vi.fn()
+  const mockHandler = vi.fn()
 
-  render(<BlogForm createBlog={createBlog} />)
+  render(<BlogForm createBlog={mockHandler} />)
 
   const title = screen.getByRole('textbox', { name: 'Title' })
   const author = screen.getByRole('textbox', { name: 'Author' })
   const url = screen.getByRole('textbox', { name: 'Url' })
 
-  const sendButton = screen.getByText('create')
+  const createButton = screen.getByText('create')
 
   await user.type(title, 'testing form title')
   await user.type(author, 'testing form author')
   await user.type(url, 'testing form url')
-  await user.click(sendButton)
+  await user.click(createButton)
 
-  const mockCalls = createBlog.mock.calls
+  const mockCalls = mockHandler.mock.calls
   console.log(mockCalls)
 
   expect(mockCalls).toHaveLength(1)
