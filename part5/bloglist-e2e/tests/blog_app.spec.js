@@ -4,10 +4,19 @@ const { loginWith, createBlog } = require('./helper')
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
     await request.post('/api/testing/reset')
+
     await request.post('/api/users', {
       data: {
         name: 'Paavo Pesusieni',
         username: 'pesusieni',
+        password: 'salainen',
+      },
+    })
+
+    await request.post('/api/users', {
+      data: {
+        name: 'Paavo Pesusieni 2',
+        username: 'pesusieni2',
         password: 'salainen',
       },
     })
@@ -53,6 +62,32 @@ describe('Blog app', () => {
       await expect(page.getByText('Likes: 0')).toBeVisible() // Likes: 0
       await page.getByRole('button', { name: 'Like' }).click()
       await expect(page.getByText('Likes: 1')).toBeVisible() // Likes: 1
+    })
+
+    test('a blog can be deleted by correct user', async ({ page }) => {
+      await createBlog(page, 'pesusieni blog', 'pesusieni', 'https://playwright.dev')
+      await expect(page.getByText('pesusieni created a new blog "pesusieni blog"')).toBeVisible()
+
+      // By default, dialogs are auto-dismissed by Playwright, so we need to accept it first
+      page.on('dialog', async (dialog) => {
+        if (dialog.type() === 'confirm') {
+          await dialog.accept()
+        }
+      })
+
+      await page.getByRole('button', { name: 'Delete' }).click()
+      await expect(page.getByTestId('blog-title')).not.toHaveText('playwright blog')
+    })
+
+    test('a blog cannot be deleted by another user', async ({ page }) => {
+      await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
+      await expect(page.getByText('playwright created a new blog "playwright blog"')).toBeVisible()
+      await page.getByRole('button', { name: 'Log out' }).click()
+
+      // Login with another user
+      await loginWith(page, 'pesusieni2', 'salainen')
+      await expect(page.getByText('Paavo Pesusieni 2 logged in')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Delete' })).not.toBeVisible()
     })
   })
 })

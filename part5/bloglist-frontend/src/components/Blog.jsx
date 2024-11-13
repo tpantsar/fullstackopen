@@ -36,8 +36,10 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
             {blog.url}
           </a>
           <div className="blog-likes-container">
-            <p>Likes: {blog.likes}</p>
-            <button onClick={() => likeBlog(blog)}>Like</button>
+            <p data-testid="blog-likes">Likes: {blog.likes}</p>
+            <button className="like-button" onClick={() => likeBlog(blog)}>
+              Like
+            </button>
           </div>
         </div>
       )}
