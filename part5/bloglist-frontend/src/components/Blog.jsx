@@ -19,7 +19,7 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
   return (
     <div className="blog">
       <div className="blog-header">
-        <div>{blog.title}</div>
+        <div data-testid="blog-title">{blog.title}</div>
         <div>
           {isAuthor && (
             <button className="delete-button" onClick={() => deleteBlog(blog)}>
