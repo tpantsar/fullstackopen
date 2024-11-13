@@ -32,7 +32,9 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
       {detailsVisible && (
         <div className="blog-details">
           <p>Author: {blog.author}</p>
-          <p>URL: {blog.url}</p>
+          <a href={blog.url} target="_blank" rel="noreferrer">
+            {blog.url}
+          </a>
           <div className="blog-likes-container">
             <p>Likes: {blog.likes}</p>
             <button onClick={() => likeBlog(blog)}>Like</button>

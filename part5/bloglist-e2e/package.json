@@ -7,9 +7,9 @@
     "test:ui": "playwright test --ui",
     "test:chromium": "playwright test --project chromium",
     "test:report": "playwright show-report",
+    "backend:test": "cd ../../part4 && npm run start:test",
     "frontend": "cd ../bloglist-frontend && npm run dev",
-    "backend": "cd ../../part4 && npm run start:test",
-    "setup": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "setup": "concurrently \"npm run backend:test\" \"npm run frontend\"",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.js\"",
     "merge": "git checkout main && git pull && git merge dev && npm run format && git push origin main && git checkout dev && git add ."
