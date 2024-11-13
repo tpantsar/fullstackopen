@@ -5,6 +5,8 @@
   "scripts": {
     "test": "playwright test",
     "test:ui": "playwright test --ui",
+    "test:trace": "playwright test --trace on",
+    "test:record": "playwright codegen http://localhost:5173/",
     "test:chromium": "playwright test --project chromium",
     "test:report": "playwright show-report",
     "backend:test": "cd ../../part4 && npm run start:test",

@@ -15,7 +15,7 @@ describe('Blog app', () => {
     await page.goto('/')
   })
 
-  test('login page can be opened', async ({ page }) => {
+  test('login form is shown', async ({ page }) => {
     const locator = await page.getByText('Log in to application')
     await expect(locator).toBeVisible()
   })
@@ -44,6 +44,15 @@ describe('Blog app', () => {
     test('a new blog can be created', async ({ page }) => {
       await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
       await expect(page.getByText('playwright created a new blog "playwright blog"')).toBeVisible()
+      await expect(page.getByTestId('blog-title')).toHaveText('playwright blog')
+    })
+
+    test('a blog can be liked', async ({ page }) => {
+      await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
+      await page.getByRole('button', { name: 'View' }).click()
+      await expect(page.getByText('Likes: 0')).toBeVisible() // Likes: 0
+      await page.getByRole('button', { name: 'Like' }).click()
+      await expect(page.getByText('Likes: 1')).toBeVisible() // Likes: 1
     })
   })
 })
