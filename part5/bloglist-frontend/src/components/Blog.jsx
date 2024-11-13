@@ -6,8 +6,11 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
 
   // Whether logged user is the author of the blog.
   // Used to show/hide the delete button.
-  const isAuthor = user && user.username === blog.user.username
-  console.log(user.username, blog.user.username, isAuthor)
+  let isAuthor = false
+  if (blog.user) {
+    isAuthor = user && user.username === blog.user.username
+    console.log(user.username, blog.user.username, isAuthor)
+  }
 
   const toggleDetails = () => {
     setDetailsVisible(!detailsVisible)

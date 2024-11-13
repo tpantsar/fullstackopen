@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "backend": "cd ../part4 && npm run dev",
+    "backend": "cd ../../part4 && npm run dev",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "build": "vite build",
