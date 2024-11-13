@@ -4,7 +4,15 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:report": "playwright show-report"
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project chromium",
+    "test:report": "playwright show-report",
+    "frontend": "cd ../bloglist-frontend && npm run dev",
+    "backend": "cd ../../part4 && npm run start:test",
+    "setup": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.js\"",
+    "merge": "git checkout main && git pull && git merge dev && npm run format && git push origin main && git checkout dev && git add ."
   },
   "keywords": [],
   "author": "",
@@ -12,6 +20,8 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.48.2",
-    "@types/node": "^22.9.0"
+    "@types/node": "^22.9.0",
+    "concurrently": "^9.1.0",
+    "prettier": "^3.3.3"
   }
 }
