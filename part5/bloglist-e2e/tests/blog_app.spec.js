@@ -89,5 +89,51 @@ describe('Blog app', () => {
       await expect(page.getByText('Paavo Pesusieni 2 logged in')).toBeVisible()
       await expect(page.getByRole('button', { name: 'Delete' })).not.toBeVisible()
     })
+
+    test('blogs are sorted by likes in descending order', async ({ page }) => {
+      await createBlog(page, 'blog with 1 like', 'playwright1', 'https://playwright.dev')
+      await page.getByRole('button', { name: 'View' }).click()
+
+      await createBlog(page, 'blog with 2 likes', 'playwright2', 'https://playwright.dev')
+      await page.getByRole('button', { name: 'View' }).click()
+
+      await createBlog(page, 'blog with 3 likes', 'playwright3', 'https://playwright.dev')
+      await page.getByRole('button', { name: 'View' }).click()
+
+      //await page.getByRole('button', { name: 'Like' }).click()
+      const likeButtons = await page.locator('.like-button').all()
+      //const likeButtons = await page.locator('button', { class: 'Like' }).all()
+
+      await likeButtons[0].click()
+      await likeButtons[1].click()
+      await likeButtons[1].click()
+      await likeButtons[2].click()
+      await likeButtons[2].click()
+      await likeButtons[2].click()
+
+      //const likes = await page.locator('.likes')
+      await page.pause()
+      const likesTexts = await page.getByTestId('blog-likes').allInnerTexts()
+      console.log(likesTexts)
+      await expect(likesTexts).toEqual(['Likes: 3', 'Likes: 2', 'Likes: 1'])
+
+      const blogTitles = await page.getByTestId('blog-title').all()
+      await expect(blogTitles).toEqual([
+        'blog with 3 likes',
+        'blog with 2 likes',
+        'blog with 1 like',
+      ])
+
+      //const likesTexts = await Promise.all(likes.map((like) => like.innerText()))
+      //await expect(likesTexts).toEqual(['2', '1', '0'])
+      //
+      //const viewButtons = await page.locatorAll('button', { name: 'View' })
+      //await viewButtons[0].click()
+      //await expect(page.getByTestId('blog-title')).toHaveText('blog 1')
+      //
+      //const blogTitles = await page.locatorAll('.blog-title')
+      //const blogTitlesTexts = await Promise.all(blogTitles.map((title) => title.innerText()))
+      //await expect(blogTitlesTexts).toEqual(['blog 1', 'blog 2', 'blog 3'])
+    })
   })
 })
