@@ -45,19 +45,19 @@ describe('Blog app', () => {
     await expect(page.getByText('Paavo Pesusieni logged in')).not.toBeVisible()
   })
 
-  describe('when logged in', () => {
+  describe('when logged in and blog created', () => {
     beforeEach(async ({ page }) => {
       await loginWith(page, 'pesusieni', 'salainen')
+      await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
+      await expect(page.getByText('playwright created a new blog "playwright blog"')).toBeVisible()
     })
 
     test('a new blog can be created', async ({ page }) => {
-      await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
-      await expect(page.getByText('playwright created a new blog "playwright blog"')).toBeVisible()
-      await expect(page.getByTestId('blog-title')).toHaveText('playwright blog')
+      await createBlog(page, 'pesusieni blog', 'pesusieni', 'https://pesusieni.net')
+      await expect(page.getByText('pesusieni created a new blog "pesusieni blog"')).toBeVisible()
     })
 
     test('a blog can be liked', async ({ page }) => {
-      await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
       await page.getByRole('button', { name: 'View' }).click()
       await expect(page.getByText('Likes: 0')).toBeVisible() // Likes: 0
       await page.getByRole('button', { name: 'Like' }).click()
@@ -65,8 +65,8 @@ describe('Blog app', () => {
     })
 
     test('a blog can be deleted by correct user', async ({ page }) => {
-      await createBlog(page, 'pesusieni blog', 'pesusieni', 'https://playwright.dev')
-      await expect(page.getByText('pesusieni created a new blog "pesusieni blog"')).toBeVisible()
+      // Open the blog details
+      await page.getByRole('button', { name: 'View' }).click()
 
       // By default, dialogs are auto-dismissed by Playwright, so we need to accept it first
       page.on('dialog', async (dialog) => {
@@ -76,18 +76,22 @@ describe('Blog app', () => {
       })
 
       await page.getByRole('button', { name: 'Delete' }).click()
-      await expect(page.getByTestId('blog-title')).not.toHaveText('playwright blog')
+      await page.waitForSelector('.success')
+      await expect(page.getByTestId('blog-title')).not.toBeVisible()
+      await expect(page.getByText('Likes: 0')).not.toBeVisible()
     })
 
     test('a blog cannot be deleted by another user', async ({ page }) => {
-      await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
-      await expect(page.getByText('playwright created a new blog "playwright blog"')).toBeVisible()
       await page.getByRole('button', { name: 'Log out' }).click()
 
       // Login with another user
       await loginWith(page, 'pesusieni2', 'salainen')
       await expect(page.getByText('Paavo Pesusieni 2 logged in')).toBeVisible()
       await expect(page.getByRole('button', { name: 'Delete' })).not.toBeVisible()
+    })
+
+    test('a blog creator can only see the delete button', async ({ page }) => {
+      await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible()
     })
 
     test('blogs are sorted by likes in descending order', async ({ page }) => {
