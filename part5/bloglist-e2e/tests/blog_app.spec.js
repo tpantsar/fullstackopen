@@ -45,7 +45,7 @@ describe('Blog app', () => {
     await expect(page.getByText('Paavo Pesusieni logged in')).not.toBeVisible()
   })
 
-  describe('when logged in and blog created', () => {
+  describe('when logged in and one blog created', () => {
     beforeEach(async ({ page }) => {
       await loginWith(page, 'pesusieni', 'salainen')
       await createBlog(page, 'playwright blog', 'playwright', 'https://playwright.dev')
@@ -96,48 +96,41 @@ describe('Blog app', () => {
 
     test('blogs are sorted by likes in descending order', async ({ page }) => {
       await createBlog(page, 'blog with 1 like', 'playwright1', 'https://playwright.dev')
-      await page.getByRole('button', { name: 'View' }).click()
+      await createBlog(page, 'blog with 3 likes', 'playwright2', 'https://playwright.dev')
 
-      await createBlog(page, 'blog with 2 likes', 'playwright2', 'https://playwright.dev')
-      await page.getByRole('button', { name: 'View' }).click()
+      await page
+        .getByText('blog with 1 likeDeleteView')
+        .getByRole('button', { name: 'View' })
+        .click()
 
-      await createBlog(page, 'blog with 3 likes', 'playwright3', 'https://playwright.dev')
-      await page.getByRole('button', { name: 'View' }).click()
+      await page.getByRole('button', { name: 'Like' }).click()
+      await expect(page.getByText('Likes: 1')).toBeVisible()
+      await page
+        .getByText('blog with 1 likeDeleteHide')
+        .getByRole('button', { name: 'Hide' })
+        .click()
 
-      //await page.getByRole('button', { name: 'Like' }).click()
-      const likeButtons = await page.locator('.like-button').all()
-      //const likeButtons = await page.locator('button', { class: 'Like' }).all()
+      await page
+        .getByText('blog with 3 likesDeleteView')
+        .getByRole('button', { name: 'View' })
+        .click()
 
-      await likeButtons[0].click()
-      await likeButtons[1].click()
-      await likeButtons[1].click()
-      await likeButtons[2].click()
-      await likeButtons[2].click()
-      await likeButtons[2].click()
+      // Like the blog 3 times
+      for (let i = 0; i < 3; i++) {
+        await page.getByRole('button', { name: 'Like' }).click()
+        await expect(page.getByText(`Likes: ${i + 1}`)).toBeVisible()
+      }
 
-      //const likes = await page.locator('.likes')
-      await page.pause()
-      const likesTexts = await page.getByTestId('blog-likes').allInnerTexts()
-      console.log(likesTexts)
-      await expect(likesTexts).toEqual(['Likes: 3', 'Likes: 2', 'Likes: 1'])
+      await page
+        .getByText('blog with 3 likesDeleteHide')
+        .getByRole('button', { name: 'Hide' })
+        .click()
 
-      const blogTitles = await page.getByTestId('blog-title').all()
-      await expect(blogTitles).toEqual([
-        'blog with 3 likes',
-        'blog with 2 likes',
-        'blog with 1 like',
-      ])
+      const expectedTitles = ['blog with 3 likes', 'blog with 1 like', 'playwright blog']
+      const blogTitles = await page.getByTestId('blog-title').allTextContents()
+      console.log('blogTitles', blogTitles)
 
-      //const likesTexts = await Promise.all(likes.map((like) => like.innerText()))
-      //await expect(likesTexts).toEqual(['2', '1', '0'])
-      //
-      //const viewButtons = await page.locatorAll('button', { name: 'View' })
-      //await viewButtons[0].click()
-      //await expect(page.getByTestId('blog-title')).toHaveText('blog 1')
-      //
-      //const blogTitles = await page.locatorAll('.blog-title')
-      //const blogTitlesTexts = await Promise.all(blogTitles.map((title) => title.innerText()))
-      //await expect(blogTitlesTexts).toEqual(['blog 1', 'blog 2', 'blog 3'])
+      await expect(blogTitles).toEqual(expectedTitles)
     })
   })
 })
