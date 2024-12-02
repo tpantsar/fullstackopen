@@ -6,6 +6,21 @@ const App = () => {
 
   const vote = (id) => {
     console.log('vote', id)
+
+    dispatch({
+      type: 'VOTE',
+      data: { id },
+    })
+  }
+
+  const createAnecdote = (event) => {
+    event.preventDefault()
+    const content = event.target.anecdote.value
+    event.target.anecdote.value = ''
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: { content },
+    })
   }
 
   return (
@@ -21,11 +36,11 @@ const App = () => {
         </div>
       ))}
       <h2>create new</h2>
-      <form>
+      <form onSubmit={createAnecdote}>
         <div>
-          <input />
+          <input name="anecdote" />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   )
