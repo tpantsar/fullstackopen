@@ -5,6 +5,8 @@ const filterSlice = createSlice({
   initialState: '',
   reducers: {
     filterChange(state, action) {
+      console.log(JSON.parse(JSON.stringify(state)))
+      console.log('action', action)
       return action.payload
     },
   },
