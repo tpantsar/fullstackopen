@@ -11,7 +11,7 @@ const App = () => {
     dispatch(initAnecdotes())
   }, [dispatch])
 
-  return (  
+  return (
     <div>
       <Anecdotes />
       <AnecdoteForm />

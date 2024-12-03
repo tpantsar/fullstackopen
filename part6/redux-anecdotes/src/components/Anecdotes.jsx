@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-import PropTypes from 'prop-types'
 
 const Anecdote = ({ anecdote, handleClick }) => (
   <div>
@@ -24,13 +24,13 @@ const Anecdotes = () => {
     return anecdotes
   })
 
-  // Sort anecdotes by votes
-  anecdotes.sort((a, b) => b.votes - a.votes)
+  // Create a new sorted array to avoid mutating the state
+  const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes)
 
   return (
     <>
       <h2>Anecdotes</h2>
-      {anecdotes.map((anecdote) => (
+      {sortedAnecdotes.map((anecdote) => (
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
