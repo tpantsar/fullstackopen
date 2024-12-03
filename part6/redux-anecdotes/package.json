@@ -9,6 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"**/*.{js,jsx}\"",
     "merge": "git checkout main && git pull && git merge dev && npm run format && git push origin main && git checkout dev && git add .",
+    "commit": "git add . && git commit -m '${input:commitMessage}' && git push",
     "preview": "vite preview"
   },
   "dependencies": {
