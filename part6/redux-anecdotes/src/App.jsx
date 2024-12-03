@@ -23,6 +23,9 @@ const App = () => {
     })
   }
 
+  // Sort anecdotes by votes
+  anecdotes.sort((a, b) => b.votes - a.votes)
+
   return (
     <div>
       <h2>Anecdotes</h2>
