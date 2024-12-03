@@ -17,7 +17,7 @@ Anecdote.propTypes = {
   handleClick: PropTypes.func.isRequired,
 }
 
-const Anecdotes = () => {
+const AnecdoteList = () => {
   const dispatch = useDispatch()
 
   const anecdotes = useSelector(({ anecdotes }) => {
@@ -41,4 +41,4 @@ const Anecdotes = () => {
   )
 }
 
-export default Anecdotes
+export default AnecdoteList

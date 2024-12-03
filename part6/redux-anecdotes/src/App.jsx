@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import AnecdoteForm from './components/AnecdoteForm'
-import Anecdotes from './components/Anecdotes'
+import AnecdoteList from './components/AnecdoteList'
 import { initAnecdotes } from './reducers/anecdoteReducer'
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
 
   return (
     <div>
-      <Anecdotes />
+      <AnecdoteList />
       <AnecdoteForm />
     </div>
   )
