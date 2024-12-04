@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import anecdoteService from '../services/anecdotes'
 
 const Anecdote = ({ anecdote, handleClick }) => (
   <div>
@@ -30,9 +31,13 @@ const AnecdoteList = () => {
     )
   })
 
-  const voteAnecdote = (id) => {
+  const voteAnecdote = async (id) => {
     const anecdote = anecdotes.find((a) => a.id === id)
-    dispatch(addVote(id))
+    const updatedAnecdote = await anecdoteService.updateVotes(id, {
+      ...anecdote,
+      votes: anecdote.votes + 1,
+    })
+    dispatch(addVote(updatedAnecdote.id))
     dispatch(setNotification(`You voted for '${anecdote.content}'`, 5))
   }
 
