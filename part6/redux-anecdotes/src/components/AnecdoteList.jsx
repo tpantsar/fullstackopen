@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => (
   <div>
@@ -29,6 +30,12 @@ const AnecdoteList = () => {
     )
   })
 
+  const voteAnecdote = (id) => {
+    const anecdote = anecdotes.find((a) => a.id === id)
+    dispatch(addVote(id))
+    dispatch(setNotification(`You voted for '${anecdote.content}'`, 5))
+  }
+
   // Create a new sorted array to avoid mutating the state
   const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes)
 
@@ -39,7 +46,7 @@ const AnecdoteList = () => {
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
-          handleClick={() => dispatch(addVote(anecdote.id))}
+          handleClick={() => voteAnecdote(anecdote.id)}
         />
       ))}
     </>
