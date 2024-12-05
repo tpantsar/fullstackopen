@@ -13,8 +13,8 @@ const createNew = async (content) => {
   return response.data
 }
 
-const updateVotes = async (id, updatedObj) => {
-  const response = await axios.put(`${baseUrl}/${id}`, updatedObj)
+const updateVotes = async (updatedObj) => {
+  const response = await axios.put(`${baseUrl}/${updatedObj.id}`, updatedObj)
   return response.data
 }
 
