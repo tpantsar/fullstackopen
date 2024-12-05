@@ -8,19 +8,27 @@ const App = () => {
     console.log('vote', anecdote.id)
   }
 
-  const result = useQuery({
+  const { isPending, isError, data, error } = useQuery({
     queryKey: ['notes'],
     queryFn: anecdoteService.getAll,
     refetchOnWindowFocus: false,
+    retry: 1,
   })
 
-  console.log(JSON.parse(JSON.stringify(result)))
-
-  if (result.isLoading) {
+  if (isPending) {
     return <div>Loading...</div>
   }
 
-  const anecdotes = result.data
+  if (isError) {
+    return (
+      <>
+        <div>Error: {error.message}</div>
+        <div>Anecdote service not available due to problems in server</div>
+      </>
+    )
+  }
+
+  console.log('data', data)
 
   return (
     <div>
@@ -29,7 +37,7 @@ const App = () => {
       <Notification />
       <AnecdoteForm />
 
-      {anecdotes.map((anecdote) => (
+      {data.map((anecdote) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
