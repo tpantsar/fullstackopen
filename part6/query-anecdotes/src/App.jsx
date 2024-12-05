@@ -9,7 +9,7 @@ const App = () => {
   }
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: ['notes'],
+    queryKey: ['anecdotes'],
     queryFn: anecdoteService.getAll,
     refetchOnWindowFocus: false,
     retry: 1,
