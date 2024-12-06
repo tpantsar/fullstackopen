@@ -23,6 +23,11 @@ const App = () => {
     onSuccess: (updatedAnecdote) => {
       console.log('updatedAnecdote', updatedAnecdote)
       queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
+      setNotification(`voted for '${updatedAnecdote.content}'`, dispatch)
+    },
+    onError: (error) => {
+      console.log('error', error)
+      setNotification('error voting', dispatch)
     },
   })
 
@@ -32,7 +37,6 @@ const App = () => {
       ...anecdote,
       votes: anecdote.votes + 1,
     })
-    setNotification(`voted for '${anecdote.content}'`, dispatch)
   }
 
   if (isPending) {
