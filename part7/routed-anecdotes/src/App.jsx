@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link, Route, Routes } from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -6,15 +7,15 @@ const Menu = () => {
   }
   return (
     <div>
-      <a href="#" style={padding}>
+      <Link style={padding} to="/">
         anecdotes
-      </a>
-      <a href="#" style={padding}>
+      </Link>
+      <Link style={padding} to="/create">
         create new
-      </a>
-      <a href="#" style={padding}>
+      </Link>
+      <Link style={padding} to="/about">
         about
-      </a>
+      </Link>
     </div>
   )
 }
@@ -41,7 +42,7 @@ const About = () => (
       laughter but to reveal a truth more general than the brief tale itself, such as to
       characterize a person by delineating a specific quirk or trait, to communicate an abstract
       idea about a person, place, or thing through the concrete details of a short narrative. An
-      anecdote is "a story with a point."
+      anecdote is &quot;a story with a point.&quot;
     </em>
 
     <p>
@@ -140,9 +141,11 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
+      <Routes>
+        <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/create" element={<CreateNew addNew={addNew} />} />
+      </Routes>
       <Footer />
     </div>
   )
