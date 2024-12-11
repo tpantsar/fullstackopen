@@ -11,10 +11,17 @@ export const useField = (name) => {
     setValue('')
   }
 
+  const formInputProps = {
+    name,
+    value,
+    onChange,
+  }
+
   return {
     name,
     value,
     onChange,
     reset,
+    formInputProps,
   }
 }
