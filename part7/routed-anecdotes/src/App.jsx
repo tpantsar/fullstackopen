@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Link, Route, Routes, useMatch } from 'react-router-dom'
+import { Link, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
+import Notification from './components/Notification'
 
 const Menu = () => {
   const padding = {
@@ -131,11 +132,16 @@ const App = () => {
     },
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState('')
+  const [notificationType, setNotificationType] = useState('')
+  const navigate = useNavigate()
 
   const addNew = (anecdote) => {
+    console.log('addNew', anecdote)
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    navigate('/')
+    setNotification(`New anecdote created: ${anecdote.content}`, 'success')
   }
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id)
@@ -151,6 +157,22 @@ const App = () => {
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)))
   }
 
+  let timeoutId
+
+  const setNotification = (message, type) => {
+    // Clear the previous timeoutId to prevent overlapping notifications
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+
+    setNotificationMessage(message)
+    setNotificationType(type)
+
+    timeoutId = setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
+  }
+
   const match = useMatch('/anecdotes/:id')
   const anecdote = match
     ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
@@ -160,6 +182,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification message={notificationMessage} type={notificationType} />
       <Routes>
         <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote} />} />
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
