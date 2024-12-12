@@ -6,12 +6,12 @@
   margin-bottom: 10px;
 }
 
-.error {
+.notification-error {
   color: red;
   background: lightgrey; 
 }
 
-.success {
+.notification-success {
   color: green;
   background: lightgrey;
 }

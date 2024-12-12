@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
+/* Components */
 import BlogForm from './components/BlogForm'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+/* Services */
 import blogService from './services/blogs'
 import loginService from './services/login'
+/* Reducers */
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
-  const [notificationMessage, setNotificationMessage] = useState(null)
-  const [notificationType, setNotificationType] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -36,15 +41,19 @@ const App = () => {
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog))
-        handleNotification(
-          `${returnedBlog.author} created a new blog "${returnedBlog.title}"`,
-          'success'
+        dispatch(
+          setNotification(
+            `${returnedBlog.author} created a new blog "${returnedBlog.title}"`,
+            'success',
+            5
+          )
         )
         // Close the form after successful blog creation
         blogFormRef.current.toggleVisibility()
       })
       .catch((error) => {
-        handleNotification('error creating blog', 'error')
+        console.log('Error creating blog:', error)
+        dispatch(setNotification('error creating blog', 'error', 5))
       })
   }
 
@@ -58,14 +67,17 @@ const App = () => {
           console.log('Blog removed:', removedBlog)
           const updatedBlogs = blogs.filter((b) => b.id !== blog.id)
           setBlogs(updatedBlogs)
-          handleNotification(
-            `Blog '${blog.title}' by ${blog.author} removed`,
-            'success'
+          dispatch(
+            setNotification(
+              `Blog '${blog.title}' by ${blog.author} removed`,
+              'success',
+              5
+            )
           )
         })
         .catch((error) => {
           console.error('Error deleting blog:', error)
-          handleNotification('Error deleting blog', 'error')
+          dispatch(setNotification('Error deleting blog', 'error', 5))
         })
     }
   }
@@ -84,9 +96,17 @@ const App = () => {
           blog.id === updatedBlog.id ? updatedBlog : blog
         )
         setBlogs(updatedBlogs)
+        dispatch(
+          setNotification(
+            `Blog '${updatedBlog.title}' liked by ${updatedBlog.author}`,
+            'success',
+            5
+          )
+        )
       })
       .catch((error) => {
         console.error('Error updating blog:', error)
+        dispatch(setNotification('Error with blog like', 'error', 5))
       })
   }
 
@@ -104,9 +124,9 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      handleNotification('login successful', 'success')
+      dispatch(setNotification('login successful', 'success', 5))
     } catch (exception) {
-      handleNotification('incorrect username or password', 'error')
+      dispatch(setNotification('incorrect username or password', 'error', 5))
     }
   }
 
@@ -116,16 +136,7 @@ const App = () => {
     setUser(null)
     setUsername('')
     setPassword('')
-    handleNotification('logout successful', 'success')
-  }
-
-  const handleNotification = (message, type) => {
-    setNotificationMessage(message)
-    setNotificationType(type)
-    setTimeout(() => {
-      setNotificationMessage(null)
-      setNotificationType(null)
-    }, 5000)
+    dispatch(setNotification('logout successful', 'success', 5))
   }
 
   if (user === null) {
@@ -136,15 +147,13 @@ const App = () => {
         handlePasswordChange={({ target }) => setPassword(target.value)}
         username={username}
         password={password}
-        notificationMessage={notificationMessage}
-        notificationType={notificationType}
       />
     )
   }
 
   return (
     <div className="app-container">
-      <Notification message={notificationMessage} type={notificationType} />
+      <Notification />
       <p>
         {user.name} logged in
         <button onClick={handleLogout}>Log out</button>

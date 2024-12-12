@@ -7,14 +7,12 @@ const LoginForm = ({
   handlePasswordChange,
   username,
   password,
-  notificationMessage,
-  notificationType,
 }) => (
   <form onSubmit={handleLogin}>
     <div>
       <h2>Log in to application</h2>
     </div>
-    <Notification message={notificationMessage} type={notificationType} />
+    <Notification />
     <div>
       username
       <input
@@ -45,8 +43,6 @@ LoginForm.propTypes = {
   handlePasswordChange: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  notificationMessage: PropTypes.string,
-  notificationType: PropTypes.string,
 }
 
 export default LoginForm
