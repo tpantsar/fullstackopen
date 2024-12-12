@@ -58,7 +58,10 @@ const App = () => {
           console.log('Blog removed:', removedBlog)
           const updatedBlogs = blogs.filter((b) => b.id !== blog.id)
           setBlogs(updatedBlogs)
-          handleNotification(`Blog '${blog.title}' by ${blog.author} removed`, 'success')
+          handleNotification(
+            `Blog '${blog.title}' by ${blog.author} removed`,
+            'success'
+          )
         })
         .catch((error) => {
           console.error('Error deleting blog:', error)
@@ -77,7 +80,9 @@ const App = () => {
       })
       .then((updatedBlog) => {
         console.log('Blog updated:', updatedBlog)
-        const updatedBlogs = blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+        const updatedBlogs = blogs.map((blog) =>
+          blog.id === updatedBlog.id ? updatedBlog : blog
+        )
         setBlogs(updatedBlogs)
       })
       .catch((error) => {
@@ -147,7 +152,12 @@ const App = () => {
       <Togglable buttonLabel="New blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      <Blogs blogs={blogs} user={user} likeBlog={likeBlog} deleteBlog={deleteBlog} />
+      <Blogs
+        blogs={blogs}
+        user={user}
+        likeBlog={likeBlog}
+        deleteBlog={deleteBlog}
+      />
     </div>
   )
 }
