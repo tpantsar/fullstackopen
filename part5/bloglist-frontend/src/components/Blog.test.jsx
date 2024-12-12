@@ -18,9 +18,18 @@ test('renders title only but not author, url, and likes by default', () => {
 
   const mockHandler = vi.fn()
 
-  render(<Blog blog={blog} user={user} likeBlog={mockHandler} deleteBlog={mockHandler} />)
+  render(
+    <Blog
+      blog={blog}
+      user={user}
+      likeBlog={mockHandler}
+      deleteBlog={mockHandler}
+    />
+  )
 
-  const title = screen.getByText('Component testing is done with react-testing-library')
+  const title = screen.getByText(
+    'Component testing is done with react-testing-library'
+  )
   expect(title).toBeDefined()
 
   const author = screen.queryByText('Author: Test Author')
@@ -50,12 +59,21 @@ test('renders title, author, url, and likes when View button is clicked', async 
 
   const mockHandler = vi.fn()
 
-  render(<Blog blog={blog} user={user} likeBlog={mockHandler} deleteBlog={mockHandler} />)
+  render(
+    <Blog
+      blog={blog}
+      user={user}
+      likeBlog={mockHandler}
+      deleteBlog={mockHandler}
+    />
+  )
 
   const viewButton = await screen.findByText('View')
   viewButton.click()
 
-  const title = await screen.findByText('Component testing is done with react-testing-library')
+  const title = await screen.findByText(
+    'Component testing is done with react-testing-library'
+  )
   expect(title).toBeDefined()
 
   const author = await screen.findByText('Author: Test Author')
@@ -85,7 +103,14 @@ test('when like button is clicked two times, expect two mock calls', async () =>
 
   const mockHandler = vi.fn()
 
-  render(<Blog blog={blog} user={user} likeBlog={mockHandler} deleteBlog={mockHandler} />)
+  render(
+    <Blog
+      blog={blog}
+      user={user}
+      likeBlog={mockHandler}
+      deleteBlog={mockHandler}
+    />
+  )
 
   const viewButton = await screen.findByText('View')
   viewButton.click()

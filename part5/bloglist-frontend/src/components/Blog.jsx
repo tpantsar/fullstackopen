@@ -26,7 +26,9 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
               Delete
             </button>
           )}
-          <button onClick={toggleDetails}>{detailsVisible ? 'Hide' : 'View'}</button>
+          <button onClick={toggleDetails}>
+            {detailsVisible ? 'Hide' : 'View'}
+          </button>
         </div>
       </div>
       {detailsVisible && (
