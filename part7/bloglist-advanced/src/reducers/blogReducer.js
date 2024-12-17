@@ -35,10 +35,24 @@ export const initBlogs = () => {
   }
 }
 
-export const createBlog = (content) => {
+export const createBlog = (blogObject) => {
   return async (dispatch) => {
-    const newBlog = await blogService.create(content)
-    dispatch(appendBlog(newBlog))
+    try {
+      const newBlog = await blogService.create(blogObject)
+      dispatch(appendBlog(newBlog))
+      dispatch(
+        setNotification(
+          `${newBlog.author} created a new blog "${newBlog.title}"`,
+          'success',
+          5
+        )
+      )
+      // Close the form after successful blog creation
+      // blogFormRef.current.toggleVisibility()
+    } catch (error) {
+      console.error('Error creating blog:', error)
+      dispatch(setNotification('Error creating blog', 'error', 5))
+    }
   }
 }
 

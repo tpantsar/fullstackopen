@@ -16,7 +16,6 @@ import { setNotification } from './reducers/notificationReducer'
 const App = () => {
   const dispatch = useDispatch()
 
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -36,27 +35,6 @@ const App = () => {
   useEffect(() => {
     dispatch(initBlogs())
   }, [dispatch])
-
-  const addBlog = (blogObject) => {
-    blogService
-      .create(blogObject)
-      .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog))
-        dispatch(
-          setNotification(
-            `${returnedBlog.author} created a new blog "${returnedBlog.title}"`,
-            'success',
-            5
-          )
-        )
-        // Close the form after successful blog creation
-        blogFormRef.current.toggleVisibility()
-      })
-      .catch((error) => {
-        console.log('Error creating blog:', error)
-        dispatch(setNotification('error creating blog', 'error', 5))
-      })
-  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -107,7 +85,7 @@ const App = () => {
         <button onClick={handleLogout}>Log out</button>
       </p>
       <Togglable buttonLabel="New blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
+        <BlogForm />
       </Togglable>
       <BlogList user={user} />
     </div>

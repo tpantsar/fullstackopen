@@ -1,19 +1,26 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
 import '../styles/BlogForm.css'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
+  const dispatch = useDispatch()
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = (event) => {
+  const handleBlogCreate = (event) => {
     event.preventDefault()
-    createBlog({
+    const blogObject = {
       title,
       author,
       url,
-    })
+    }
+    console.log('create new blog:', blogObject)
+    dispatch(createBlog(blogObject))
 
+    // Reset form fields
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -22,7 +29,7 @@ const BlogForm = ({ createBlog }) => {
   return (
     <div className="blog-form-container">
       <h3>New blog</h3>
-      <form onSubmit={addBlog}>
+      <form onSubmit={handleBlogCreate}>
         <div>
           <label htmlFor="title">Title</label>
           <input
