@@ -1,80 +1,37 @@
-import { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 /* Components */
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-/* Services */
-import blogService from './services/blogs'
-import loginService from './services/login'
 /* Reducers */
 import { initBlogs } from './reducers/blogReducer'
-import { setNotification } from './reducers/notificationReducer'
+import { initUser, logUserOut } from './reducers/userReducer'
+import { initUsers } from './reducers/usersReducer'
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const user = useSelector((state) => state.user)
 
   const blogFormRef = useRef()
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
-
-  // Fetch blogs from the server when the component is rendered
+  // Fetch all blogs and users from the server
   useEffect(() => {
     dispatch(initBlogs())
+    dispatch(initUsers())
+    dispatch(initUser())
   }, [dispatch])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      console.log(user)
-      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-      dispatch(setNotification('login successful', 'success', 5))
-    } catch (exception) {
-      dispatch(setNotification('incorrect username or password', 'error', 5))
-    }
-  }
 
   const handleLogout = async (event) => {
     event.preventDefault()
-    window.localStorage.removeItem('loggedBlogUser')
-    setUser(null)
-    setUsername('')
-    setPassword('')
-    dispatch(setNotification('logout successful', 'success', 5))
+    dispatch(logUserOut())
   }
 
-  if (user === null) {
-    return (
-      <LoginForm
-        handleLogin={handleLogin}
-        handleUsernameChange={({ target }) => setUsername(target.value)}
-        handlePasswordChange={({ target }) => setPassword(target.value)}
-        username={username}
-        password={password}
-      />
-    )
+  if (user === null || user === undefined) {
+    return <LoginForm />
   }
 
   return (
