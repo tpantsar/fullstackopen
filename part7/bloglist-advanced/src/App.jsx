@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 /* Components */
 import BlogForm from './components/BlogForm'
-import Blogs from './components/Blogs'
+import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -10,6 +10,7 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 /* Reducers */
+import { initBlogs } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
@@ -33,8 +34,8 @@ const App = () => {
 
   // Fetch blogs from the server when the component is rendered
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+    dispatch(initBlogs())
+  }, [dispatch])
 
   const addBlog = (blogObject) => {
     blogService
@@ -54,59 +55,6 @@ const App = () => {
       .catch((error) => {
         console.log('Error creating blog:', error)
         dispatch(setNotification('error creating blog', 'error', 5))
-      })
-  }
-
-  const deleteBlog = (blog) => {
-    console.log('Delete clicked')
-    console.log('Blog:', blog)
-    if (window.confirm(`Remove blog '${blog.title}' by ${blog.author}?`)) {
-      blogService
-        .remove(blog.id)
-        .then((removedBlog) => {
-          console.log('Blog removed:', removedBlog)
-          const updatedBlogs = blogs.filter((b) => b.id !== blog.id)
-          setBlogs(updatedBlogs)
-          dispatch(
-            setNotification(
-              `Blog '${blog.title}' by ${blog.author} removed`,
-              'success',
-              5
-            )
-          )
-        })
-        .catch((error) => {
-          console.error('Error deleting blog:', error)
-          dispatch(setNotification('Error deleting blog', 'error', 5))
-        })
-    }
-  }
-
-  const likeBlog = (blog) => {
-    console.log('Like clicked')
-    console.log('Blog:', blog)
-    blogService
-      .update(blog.id, {
-        ...blog,
-        likes: blog.likes + 1,
-      })
-      .then((updatedBlog) => {
-        console.log('Blog updated:', updatedBlog)
-        const updatedBlogs = blogs.map((blog) =>
-          blog.id === updatedBlog.id ? updatedBlog : blog
-        )
-        setBlogs(updatedBlogs)
-        dispatch(
-          setNotification(
-            `Blog '${updatedBlog.title}' liked by ${updatedBlog.author}`,
-            'success',
-            5
-          )
-        )
-      })
-      .catch((error) => {
-        console.error('Error updating blog:', error)
-        dispatch(setNotification('Error with blog like', 'error', 5))
       })
   }
 
@@ -161,12 +109,7 @@ const App = () => {
       <Togglable buttonLabel="New blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      <Blogs
-        blogs={blogs}
-        user={user}
-        likeBlog={likeBlog}
-        deleteBlog={deleteBlog}
-      />
+      <BlogList user={user} />
     </div>
   )
 }

@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import '../styles/Blog.css'
 
-const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
+const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch()
   const [detailsVisible, setDetailsVisible] = useState(false)
 
   // Whether logged user is the author of the blog.
@@ -16,13 +19,28 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
     setDetailsVisible(!detailsVisible)
   }
 
+  const handleDelete = (blog) => {
+    console.log('Delete clicked')
+    console.log('Blog:', blog)
+    dispatch(deleteBlog(blog.id))
+  }
+
+  const handleLike = (blog) => {
+    console.log('Like clicked')
+    console.log('Blog:', blog)
+    dispatch(likeBlog(blog.id))
+  }
+
   return (
     <div className="blog">
       <div className="blog-header">
         <div data-testid="blog-title">{blog.title}</div>
         <div>
           {isAuthor && (
-            <button className="delete-button" onClick={() => deleteBlog(blog)}>
+            <button
+              className="delete-button"
+              onClick={() => handleDelete(blog)}
+            >
               Delete
             </button>
           )}
@@ -39,7 +57,7 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
           </a>
           <div className="blog-likes-container">
             <p data-testid="blog-likes">Likes: {blog.likes}</p>
-            <button className="like-button" onClick={() => likeBlog(blog)}>
+            <button className="like-button" onClick={() => handleLike(blog)}>
               Like
             </button>
           </div>
