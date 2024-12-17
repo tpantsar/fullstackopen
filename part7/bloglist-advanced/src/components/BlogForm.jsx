@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import '../styles/BlogForm.css'
 
-const BlogForm = () => {
+const BlogForm = forwardRef((_props, ref) => {
   const dispatch = useDispatch()
 
   const [title, setTitle] = useState('')
@@ -19,6 +19,9 @@ const BlogForm = () => {
     }
     console.log('create new blog:', blogObject)
     dispatch(createBlog(blogObject))
+
+    // Close the form after successful blog creation
+    ref.current.toggleVisibility()
 
     // Reset form fields
     setTitle('')
@@ -67,6 +70,7 @@ const BlogForm = () => {
       </form>
     </div>
   )
-}
+})
 
+BlogForm.displayName = 'BlogForm'
 export default BlogForm

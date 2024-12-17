@@ -30,8 +30,13 @@ const blogSlice = createSlice({
 
 export const initBlogs = () => {
   return async (dispatch) => {
-    const blogs = await blogService.getAll()
-    dispatch(setBlogs(blogs))
+    try {
+      const blogs = await blogService.getAll()
+      dispatch(setBlogs(blogs))
+    } catch (error) {
+      console.error('Error fetching blogs:', error)
+      dispatch(setNotification('Error fetching blogs', 'error', 5))
+    }
   }
 }
 
@@ -47,8 +52,6 @@ export const createBlog = (blogObject) => {
           5
         )
       )
-      // Close the form after successful blog creation
-      // blogFormRef.current.toggleVisibility()
     } catch (error) {
       console.error('Error creating blog:', error)
       dispatch(setNotification('Error creating blog', 'error', 5))
