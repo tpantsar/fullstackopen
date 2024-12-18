@@ -26,6 +26,8 @@ export const initUser = () => {
       const user = JSON.parse(loggedUserJSON)
       dispatch(setUser(user))
       blogService.setToken(user.token)
+    } else {
+      dispatch(setUser(null))
     }
   }
 }

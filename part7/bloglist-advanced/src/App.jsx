@@ -14,7 +14,11 @@ import { initUsers } from './reducers/usersReducer'
 const App = () => {
   const dispatch = useDispatch()
 
+  const users = useSelector((state) => state.users)
+  console.log('users:', users)
+
   const user = useSelector((state) => state.user)
+  console.log('user:', user)
 
   const blogFormRef = useRef()
 
@@ -30,7 +34,7 @@ const App = () => {
     dispatch(logUserOut())
   }
 
-  if (user === null || user === undefined) {
+  if (user === null || user === undefined || user.length === 0) {
     return <LoginForm />
   }
 
