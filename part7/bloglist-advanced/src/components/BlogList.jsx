@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
-import Blog from './Blog'
+import BlogItem from './BlogItem'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 
@@ -28,7 +28,7 @@ const BlogList = ({ user }) => {
       </Togglable>
       <h3>Blogs: {sortedBlogs.length}</h3>
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} user={user} />
+        <BlogItem key={blog.id} blog={blog} user={user} />
       ))}
     </div>
   )

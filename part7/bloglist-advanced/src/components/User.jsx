@@ -13,6 +13,10 @@ import {
 } from '@mui/material'
 
 const User = ({ user }) => {
+  if (!user) {
+    return <div>Loading user information ...</div>
+  }
+
   const blogs = user.blogs
 
   return (

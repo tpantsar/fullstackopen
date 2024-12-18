@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import '../styles/Blog.css'
 
-const Blog = ({ blog, user }) => {
+const BlogItem = ({ blog, user }) => {
   const dispatch = useDispatch()
   const [detailsVisible, setDetailsVisible] = useState(false)
 
@@ -67,4 +67,5 @@ const Blog = ({ blog, user }) => {
   )
 }
 
-export default Blog
+BlogItem.displayName = 'BlogItem'
+export default BlogItem
