@@ -9,6 +9,8 @@ const BlogItemInfo = ({ blog, user }) => {
     return <div>Loading ...</div>
   }
 
+  const comments = blog.comments || []
+
   // Whether logged user is the author of the blog.
   // Used to show/hide the delete button.
   let isAuthor = false
@@ -55,6 +57,15 @@ const BlogItemInfo = ({ blog, user }) => {
               Delete
             </button>
           )}
+        </div>
+        <div>
+          <h2>Comments</h2>
+          <ul>
+            {comments.length === 0 && <li>No comments</li>}
+            {comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
