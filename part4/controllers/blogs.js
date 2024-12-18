@@ -31,6 +31,7 @@ blogsRouter.post('/', async (request, response) => {
     url: url,
     likes: likes || 0,
     user: user._id,
+    comments: [],
   })
 
   const savedBlog = await blog.save()
@@ -46,6 +47,20 @@ blogsRouter.post('/', async (request, response) => {
 
   console.log('populatedBlog:', populatedBlog)
   response.status(201).json(populatedBlog)
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { comment } = request.body
+  const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    return response.status(404).json({ error: 'Blog not found' })
+  }
+
+  blog.comments = blog.comments.concat(comment)
+  await blog.save()
+
+  response.status(201).json(blog)
 })
 
 blogsRouter.put('/:id', async (request, response) => {
