@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Route, Routes } from 'react-router-dom'
 /* Components */
-import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
+import Users from './components/Users'
 /* Reducers */
 import { initBlogs } from './reducers/blogReducer'
 import { initUser, logUserOut } from './reducers/userReducer'
@@ -19,8 +19,6 @@ const App = () => {
 
   const user = useSelector((state) => state.user)
   console.log('user:', user)
-
-  const blogFormRef = useRef()
 
   // Fetch all blogs and users from the server
   useEffect(() => {
@@ -45,10 +43,10 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}>Log out</button>
       </p>
-      <Togglable buttonLabel="New blog" ref={blogFormRef}>
-        <BlogForm ref={blogFormRef} />
-      </Togglable>
-      <BlogList user={user} />
+      <Routes>
+        <Route path="/" element={<BlogList user={user} />} />
+        <Route path="/users" element={<Users users={users} />} />
+      </Routes>
     </div>
   )
 }

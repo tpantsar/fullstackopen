@@ -1,9 +1,16 @@
-import { useSelector } from 'react-redux'
+import { useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Blog from './Blog'
+import BlogForm from './BlogForm'
+import Togglable from './Togglable'
 
 const BlogList = ({ user }) => {
+  const dispatch = useDispatch()
+
   const blogs = useSelector((state) => state.blogs)
   console.log('blogs', blogs)
+
+  const blogFormRef = useRef()
 
   if (!blogs) {
     return <div>No blogs available</div>
@@ -18,6 +25,9 @@ const BlogList = ({ user }) => {
 
   return (
     <div>
+      <Togglable buttonLabel="New blog" ref={blogFormRef}>
+        <BlogForm ref={blogFormRef} />
+      </Togglable>
       <h3>Blogs: {sortedBlogs.length}</h3>
       {sortedBlogs.map((blog) => (
         <Blog key={blog.id} blog={blog} user={user} />
