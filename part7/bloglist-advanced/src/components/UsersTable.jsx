@@ -1,5 +1,8 @@
+import { Link } from 'react-router-dom'
+
 import {
   Box,
+  Link as MuiLink,
   Paper,
   Table,
   TableBody,
@@ -13,7 +16,7 @@ const UsersTable = ({ users }) => {
   return (
     <Box textAlign="left" sx={{ mt: 3, mb: 3 }}>
       <h2>Users: {users.length}</h2>
-      <TableContainer className="users-table" component={Paper}>
+      <TableContainer className="table-container" component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -25,7 +28,16 @@ const UsersTable = ({ users }) => {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell align="left">{user.name}</TableCell>
+                <TableCell align="left">
+                  <MuiLink
+                    component={Link}
+                    color="inherit"
+                    underline="hover"
+                    to={`/users/${user.id}`}
+                  >
+                    {user.name}
+                  </MuiLink>
+                </TableCell>
                 <TableCell align="left">{user.username}</TableCell>
                 <TableCell align="left">{user.blogs.length}</TableCell>
               </TableRow>

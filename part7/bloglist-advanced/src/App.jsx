@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useMatch } from 'react-router-dom'
 /* Components */
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import User from './components/User'
 import UsersTable from './components/UsersTable'
 /* Reducers */
 import { initBlogs } from './reducers/blogReducer'
@@ -32,6 +33,11 @@ const App = () => {
     dispatch(logUserOut())
   }
 
+  const userMatch = useMatch('/users/:id')
+  const individualUser = userMatch
+    ? users.find((user) => user.id === userMatch.params.id)
+    : null
+
   if (user === null || user === undefined || user.length === 0) {
     return <LoginForm />
   }
@@ -46,6 +52,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<BlogList user={user} />} />
         <Route path="/users" element={<UsersTable users={users} />} />
+        <Route
+          path="users/:id"
+          element={<User user={individualUser} />}
+        />
       </Routes>
     </div>
   )
