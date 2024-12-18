@@ -36,7 +36,7 @@ const User = ({ user }) => {
           <TableBody>
             {blogs.length === 0 && (
               <TableRow>
-                <TableCell colSpan={3} align="center">
+                <TableCell colSpan={4} align="center">
                   No blogs added
                 </TableCell>
               </TableRow>

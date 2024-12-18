@@ -5,6 +5,7 @@ import { Route, Routes, useMatch } from 'react-router-dom'
 import BlogItemInfo from './components/BlogItemInfo'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
+import Menu from './components/Menu'
 import Notification from './components/Notification'
 import User from './components/User'
 import UsersTable from './components/UsersTable'
@@ -55,6 +56,7 @@ const App = () => {
 
   return (
     <div className="app-container">
+      <Menu />
       <Notification />
       <p>
         {user.name} logged in
