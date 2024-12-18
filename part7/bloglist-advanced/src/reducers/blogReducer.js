@@ -15,15 +15,25 @@ const blogSlice = createSlice({
       logReducerState(state, action)
       return action.payload
     },
-    appendBlog: (state, action) => {
+    addBlog: (state, action) => {
       logReducerState(state, action)
       state.push(action.payload)
+    },
+    removeBlog: (state, action) => {
+      logReducerState(state, action)
+      return state.filter((b) => b.id !== action.payload)
     },
     addLike: (state, action) => {
       logReducerState(state, action)
       const id = action.payload.id
-      const blogToChange = state.find((b) => b.id === id)
-      blogToChange.likes += 1
+      const blogToLike = state.find((b) => b.id === id)
+      blogToLike.likes += 1
+    },
+    addComment: (state, action) => {
+      logReducerState(state, action)
+      const id = action.payload.id
+      const blogToComment = state.find((b) => b.id === id)
+      blogToComment.comments = action.payload.comments
     },
   },
 })
@@ -44,7 +54,7 @@ export const createBlog = (blogObject) => {
   return async (dispatch) => {
     try {
       const newBlog = await blogService.create(blogObject)
-      dispatch(appendBlog(newBlog))
+      dispatch(addBlog(newBlog))
       dispatch(
         setNotification(
           `${newBlog.author} created a new blog "${newBlog.title}"`,
@@ -69,8 +79,7 @@ export const deleteBlog = (id) => {
     ) {
       try {
         await blogService.remove(id)
-        const updatedBlogs = getState().blogs.filter((b) => b.id !== id)
-        dispatch(setBlogs(updatedBlogs))
+        dispatch(removeBlog(id))
         dispatch(
           setNotification(
             `Blog '${blogToDelete.title}' by ${blogToDelete.author} removed`,
@@ -112,5 +121,25 @@ export const likeBlog = (id) => {
   }
 }
 
-export const { setBlogs, appendBlog, addLike } = blogSlice.actions
+export const commentBlog = (id, comment) => {
+  return async (dispatch) => {
+    try {
+      const commentedBlog = await blogService.commentBlog(id, comment)
+      dispatch(addComment(commentedBlog))
+      dispatch(
+        setNotification(
+          `Comment added to '${commentedBlog.title}' written by ${commentedBlog.author}`,
+          'success',
+          5
+        )
+      )
+    } catch (error) {
+      console.error('Error commenting on blog:', error)
+      dispatch(setNotification('Error commenting on blog', 'error', 5))
+    }
+  }
+}
+
+export const { setBlogs, addBlog, removeBlog, addLike, addComment } =
+  blogSlice.actions
 export default blogSlice.reducer
