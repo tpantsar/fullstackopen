@@ -1,12 +1,10 @@
 import { useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 
 const BlogList = ({ user }) => {
-  const dispatch = useDispatch()
-
   const blogs = useSelector((state) => state.blogs)
   console.log('blogs', blogs)
 

@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import Users from './components/Users'
+import UsersTable from './components/UsersTable'
 /* Reducers */
 import { initBlogs } from './reducers/blogReducer'
 import { initUser, logUserOut } from './reducers/userReducer'
@@ -45,7 +45,7 @@ const App = () => {
       </p>
       <Routes>
         <Route path="/" element={<BlogList user={user} />} />
-        <Route path="/users" element={<Users users={users} />} />
+        <Route path="/users" element={<UsersTable users={users} />} />
       </Routes>
     </div>
   )
