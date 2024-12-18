@@ -1,5 +1,7 @@
+import { Link as MuiLink } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import '../styles/Blog.css'
 
@@ -34,7 +36,16 @@ const BlogItem = ({ blog, user }) => {
   return (
     <div className="blog">
       <div className="blog-header">
-        <div data-testid="blog-title">{blog.title}</div>
+        <div data-testid="blog-title">
+          <MuiLink
+            component={Link}
+            color="inherit"
+            underline="hover"
+            to={`/blogs/${blog.id}`}
+          >
+            {blog.title}
+          </MuiLink>
+        </div>
         <div>
           {isAuthor && (
             <button
