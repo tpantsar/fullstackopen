@@ -4,14 +4,14 @@ import { Route, Routes, useMatch } from 'react-router-dom'
 /* Components */
 import BlogItemInfo from './components/BlogItemInfo'
 import BlogList from './components/BlogList'
-import LoginForm from './components/LoginForm'
 import Menu from './components/Menu'
 import Notification from './components/Notification'
 import User from './components/User'
 import UsersTable from './components/UsersTable'
 /* Reducers */
+import SignIn from './components/SignIn'
 import { initBlogs } from './reducers/blogReducer'
-import { initUser, logUserOut } from './reducers/userReducer'
+import { initUser } from './reducers/userReducer'
 import { initUsers } from './reducers/usersReducer'
 
 const App = () => {
@@ -32,11 +32,6 @@ const App = () => {
     dispatch(initUser())
   }, [dispatch])
 
-  const handleLogout = async (event) => {
-    event.preventDefault()
-    dispatch(logUserOut())
-  }
-
   const userMatch = useMatch('/users/:id')
   const individualUser = userMatch
     ? users.find((user) => user.id === userMatch.params.id)
@@ -51,17 +46,13 @@ const App = () => {
   console.log('individualBlog:', individualBlog)
 
   if (user === null || user === undefined || user.length === 0) {
-    return <LoginForm />
+    return <SignIn />
   }
 
   return (
     <div className="app-container">
-      <Menu />
       <Notification />
-      <p>
-        {user.name} logged in
-        <button onClick={handleLogout}>Log out</button>
-      </p>
+      <Menu user={user} />
       <Routes>
         <Route path="/" element={<BlogList user={user} />} />
         <Route path="/users" element={<UsersTable users={users} />} />

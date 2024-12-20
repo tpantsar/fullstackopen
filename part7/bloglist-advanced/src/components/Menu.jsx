@@ -1,22 +1,53 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { logUserOut } from '../reducers/userReducer'
 
-const Menu = () => {
-  const padding = {
-    paddingRight: 15,
+export default function Menu({ user }) {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    dispatch(logUserOut())
+    navigate('/')
   }
 
   return (
-    <div>
-      <Link style={padding} to="/">
-        Blogs
-      </Link>
-      <Link style={padding} to="/users">
-        Users
-      </Link>
-    </div>
+    <AppBar position="static" sx={{ borderRadius: 1 }}>
+      <Toolbar>
+        <Button color="inherit" LinkComponent={Link} to="/">
+          Blogs
+        </Button>
+        <Button color="inherit" LinkComponent={Link} to="/users">
+          Users
+        </Button>
+        {user ? (
+          <Box sx={{ ml: 'auto' }}>
+            <Typography variant="body1" color="inherit" component="div">
+              {user.name} logged in{' '}
+              <Button color="error" variant="contained" onClick={handleLogout}>
+                Log out
+              </Button>
+            </Typography>
+          </Box>
+        ) : (
+          <Button
+            color="success"
+            sx={{ ml: 'auto' }}
+            variant="contained"
+            LinkComponent={Link}
+            to={'/login'}
+          >
+            login
+          </Button>
+        )}
+      </Toolbar>
+    </AppBar>
   )
 }
-
-Menu.displayName = 'Menu'
-export default Menu
