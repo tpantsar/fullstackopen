@@ -53,7 +53,7 @@ const BlogItem = ({ blog, user }) => {
       <TableCell align="left">
         <MuiLink
           component={Link}
-          color="inherit"
+          color="primary"
           underline="hover"
           to={`/blogs/${blog.id}`}
         >
