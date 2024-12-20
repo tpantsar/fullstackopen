@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useMatch } from 'react-router-dom'
 /* Components */
-import BlogItemInfo from './components/BlogItemInfo'
+import BlogPage from './components/BlogPage'
 import BlogList from './components/BlogList'
 import Menu from './components/Menu'
 import Notification from './components/Notification'
@@ -59,7 +59,7 @@ const App = () => {
         <Route path="users/:id" element={<User user={individualUser} />} />
         <Route
           path="blogs/:id"
-          element={<BlogItemInfo blog={individualBlog} user={user} />}
+          element={<BlogPage blog={individualBlog} user={user} />}
         />
       </Routes>
     </div>
