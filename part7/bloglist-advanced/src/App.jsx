@@ -51,8 +51,8 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <Notification />
       <Menu user={user} />
+      <Notification />
       <Routes>
         <Route path="/" element={<BlogList user={user} />} />
         <Route path="/users" element={<UsersTable users={users} />} />

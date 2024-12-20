@@ -1,3 +1,7 @@
+import CheckIcon from '@mui/icons-material/Check'
+import ErrorIcon from '@mui/icons-material/Error'
+import InfoIcon from '@mui/icons-material/Info'
+import Alert from '@mui/material/Alert'
 import { useSelector } from 'react-redux'
 import '../styles/Notification.css'
 
@@ -9,11 +13,23 @@ const Notification = () => {
   }
 
   if (type === 'error') {
-    return <div className="notification notification-error">{message}</div>
+    return (
+      <Alert icon={<ErrorIcon fontSize="inherit" />} severity="error">
+        {message}
+      </Alert>
+    )
   } else if (type === 'success') {
-    return <div className="notification notification-success">{message}</div>
+    return (
+      <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+        {message}
+      </Alert>
+    )
   } else {
-    return <div className="notification">{message}</div>
+    return (
+      <Alert icon={<InfoIcon fontSize="inherit" />} severity="info">
+        {message}
+      </Alert>
+    )
   }
 }
 

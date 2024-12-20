@@ -19,7 +19,7 @@ export default function Menu({ user }) {
   }
 
   return (
-    <AppBar position="static" sx={{ borderRadius: 1 }}>
+    <AppBar position="static" sx={{ mb: 3, borderRadius: 1 }}>
       <Toolbar>
         <Button color="inherit" LinkComponent={Link} to="/">
           Blogs
