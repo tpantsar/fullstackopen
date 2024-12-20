@@ -31,7 +31,7 @@ const UsersTable = ({ users }) => {
                 <TableCell align="left">
                   <MuiLink
                     component={Link}
-                    color="inherit"
+                    color="primary"
                     underline="hover"
                     to={`/users/${user.id}`}
                   >

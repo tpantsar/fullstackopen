@@ -1,6 +1,6 @@
 import '../styles/Blog.css'
-import BasicCard from './BasicCard'
-import Comments from './Comments'
+import BlogCard from './BlogCard'
+import BlogComments from './BlogComments'
 
 const BlogPage = ({ blog, user }) => {
   if (!blog || !user) {
@@ -9,8 +9,8 @@ const BlogPage = ({ blog, user }) => {
 
   return (
     <>
-      <BasicCard blog={blog} user={user} />
-      <Comments blog={blog} />
+      <BlogCard blog={blog} user={user} />
+      <BlogComments blog={blog} />
     </>
   )
 }

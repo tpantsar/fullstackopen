@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import { commentBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-export default function Comments({ blog }) {
+export default function BlogComments({ blog }) {
   const dispatch = useDispatch()
   const [comment, setComment] = useState('')
 
