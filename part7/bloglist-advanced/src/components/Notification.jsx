@@ -14,19 +14,31 @@ const Notification = () => {
 
   if (type === 'error') {
     return (
-      <Alert icon={<ErrorIcon fontSize="inherit" />} severity="error">
+      <Alert
+        style={{ marginTop: 10, marginBottom: 10 }}
+        icon={<ErrorIcon fontSize="inherit" />}
+        severity="error"
+      >
         {message}
       </Alert>
     )
   } else if (type === 'success') {
     return (
-      <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+      <Alert
+        style={{ marginTop: 10, marginBottom: 10 }}
+        icon={<CheckIcon fontSize="inherit" />}
+        severity="success"
+      >
         {message}
       </Alert>
     )
   } else {
     return (
-      <Alert icon={<InfoIcon fontSize="inherit" />} severity="info">
+      <Alert
+        style={{ marginTop: 10, marginBottom: 10 }}
+        icon={<InfoIcon fontSize="inherit" />}
+        severity="info"
+      >
         {message}
       </Alert>
     )

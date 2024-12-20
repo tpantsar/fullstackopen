@@ -56,7 +56,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }))
 
-export default function SignIn() {
+export default function LoginPage() {
   const dispatch = useDispatch()
 
   const [username, setUsername] = useState('')

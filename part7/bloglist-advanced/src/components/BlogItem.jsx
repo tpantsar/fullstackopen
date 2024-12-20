@@ -1,24 +1,19 @@
-import { Link as MuiLink } from '@mui/material'
-import { useState } from 'react'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import { IconButton, Link as MuiLink, TableCell, TableRow } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
-import '../styles/Blog.css'
 
 const BlogItem = ({ blog, user }) => {
   const dispatch = useDispatch()
-  const [detailsVisible, setDetailsVisible] = useState(false)
 
   // Whether logged user is the author of the blog.
-  // Used to show/hide the delete button.
+  // Used to show/hide the delete icon button.
   let isAuthor = false
   if (blog.user) {
     isAuthor = user && user.username === blog.user.username
     console.log(user.username, blog.user.username, isAuthor)
-  }
-
-  const toggleDetails = () => {
-    setDetailsVisible(!detailsVisible)
   }
 
   const handleDelete = (blog) => {
@@ -34,47 +29,41 @@ const BlogItem = ({ blog, user }) => {
   }
 
   return (
-    <div className="blog">
-      <div className="blog-header">
-        <div data-testid="blog-title">
-          <MuiLink
-            component={Link}
-            color="inherit"
-            underline="hover"
-            to={`/blogs/${blog.id}`}
+    <TableRow key={blog.id}>
+      <TableCell align="left">
+        <IconButton
+          onClick={() => handleLike(blog)}
+          size="small"
+          aria-label="like blog"
+          color="success"
+        >
+          <ThumbUpIcon />
+        </IconButton>
+        {isAuthor && (
+          <IconButton
+            onClick={() => handleDelete(blog)}
+            size="small"
+            aria-label="delete"
+            color="error"
           >
-            {blog.title}
-          </MuiLink>
-        </div>
-        <div>
-          {isAuthor && (
-            <button
-              className="delete-button"
-              onClick={() => handleDelete(blog)}
-            >
-              Delete
-            </button>
-          )}
-          <button onClick={toggleDetails}>
-            {detailsVisible ? 'Hide' : 'View'}
-          </button>
-        </div>
-      </div>
-      {detailsVisible && (
-        <div className="blog-details">
-          <p>Author: {blog.author}</p>
-          <a href={blog.url} target="_blank" rel="noreferrer">
-            {blog.url}
-          </a>
-          <div className="blog-likes-container">
-            <p data-testid="blog-likes">Likes: {blog.likes}</p>
-            <button className="like-button" onClick={() => handleLike(blog)}>
-              Like
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+            <DeleteIcon />
+          </IconButton>
+        )}
+      </TableCell>
+      <TableCell align="left">
+        <MuiLink
+          component={Link}
+          color="inherit"
+          underline="hover"
+          to={`/blogs/${blog.id}`}
+        >
+          {blog.title}
+        </MuiLink>
+      </TableCell>
+      <TableCell align="left">{blog.author}</TableCell>
+      <TableCell align="left">{blog.url}</TableCell>
+      <TableCell align="left">{blog.likes}</TableCell>
+    </TableRow>
   )
 }
 

@@ -66,7 +66,7 @@ const BlogForm = forwardRef((_props, ref) => {
             placeholder="Url"
           />
         </div>
-        <button type="submit">create</button>
+        <button type="submit">Create</button>
       </form>
     </div>
   )

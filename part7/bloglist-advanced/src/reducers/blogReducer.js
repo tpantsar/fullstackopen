@@ -109,7 +109,7 @@ export const likeBlog = (id) => {
       dispatch(addLike(likedBlog))
       dispatch(
         setNotification(
-          `Blog '${likedBlog.title}' liked by ${likedBlog.author}`,
+          `Blog '${likedBlog.title}' by ${likedBlog.author} liked`,
           'success',
           5
         )

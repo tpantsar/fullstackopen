@@ -9,7 +9,7 @@ import Notification from './components/Notification'
 import User from './components/User'
 import UsersTable from './components/UsersTable'
 /* Reducers */
-import SignIn from './components/SignIn'
+import LoginPage from './components/LoginPage'
 import { initBlogs } from './reducers/blogReducer'
 import { initUser } from './reducers/userReducer'
 import { initUsers } from './reducers/usersReducer'
@@ -46,7 +46,7 @@ const App = () => {
   console.log('individualBlog:', individualBlog)
 
   if (user === null || user === undefined || user.length === 0) {
-    return <SignIn />
+    return <LoginPage />
   }
 
   return (
