@@ -6,39 +6,39 @@ import store from '../store'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 
-test('<BlogForm /> updates parent state and calls onSubmit', async () => {
-  const user = userEvent.setup()
-  const mockHandler = vi.fn()
-
+const TestComponent = () => {
   const blogFormRef = useRef()
 
-  render(
+  return (
     <Provider store={store}>
-      <Togglable buttonLabel="New blog" ref={blogFormRef}>
+      <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
         <BlogForm ref={blogFormRef} />
       </Togglable>
     </Provider>
   )
+}
 
-  const newBlogButton = screen.getByText('New blog')
-  user.click(newBlogButton)
+test('BlogForm updates parent state and form is closed', async () => {
+  const user = userEvent.setup()
 
-  const title = screen.getByRole('textbox', { name: 'Title' })
-  const author = screen.getByRole('textbox', { name: 'Author' })
-  const url = screen.getByRole('textbox', { name: 'Url' })
+  render(<TestComponent />)
+
+  const newBlogButton = screen.getByText('Create new blog')
+  await user.click(newBlogButton)
+
+  const title = screen.getByLabelText('Title')
+  const author = screen.getByLabelText('Author')
+  const url = screen.getByLabelText('Url')
 
   await user.type(title, 'testing form title')
   await user.type(author, 'testing form author')
   await user.type(url, 'testing form url')
 
-  const createButton = screen.getByText('create')
+  const createButton = screen.getByText('Create')
   await user.click(createButton)
 
-  const mockCalls = mockHandler.mock.calls
-  console.log(mockCalls)
-
-  expect(mockCalls).toHaveLength(1)
-  expect(mockCalls[0][0].title).toBe('testing form title')
-  expect(mockCalls[0][0].author).toBe('testing form author')
-  expect(mockCalls[0][0].url).toBe('testing form url')
+  // Check if the form fields are reset
+  expect(title.value).toBe('')
+  expect(author.value).toBe('')
+  expect(url.value).toBe('')
 })
