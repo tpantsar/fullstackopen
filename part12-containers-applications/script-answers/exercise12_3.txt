@@ -1,0 +1,6 @@
+docker start -i eloquent_shtern
+nano /usr/src/app/index.js
+console.log('Hello World')
+Ctrl + O
+Enter
+Ctrl + X
