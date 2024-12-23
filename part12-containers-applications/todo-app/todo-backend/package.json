@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "build": "docker build -t todo-backend .",
-    "docker": "docker run -p 3123:3000 todo-backend",
+    "build": "docker compose up --build",
+    "docker": "docker compose up",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
