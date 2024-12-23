@@ -6,6 +6,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "build": "docker compose up --build",
+    "build-mongo": "docker build -t initialized-mongo .",
     "docker": "docker compose up",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
