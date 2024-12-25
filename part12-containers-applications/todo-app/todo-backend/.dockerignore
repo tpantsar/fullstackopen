@@ -1,5 +1,6 @@
 .dockerignore
 .gitignore
 .prettierrc
+.env
 node_modules
 Dockerfile
