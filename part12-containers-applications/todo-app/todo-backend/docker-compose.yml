@@ -1,6 +1,9 @@
 services:
-  app:                    # The name of the service, can be anything
-    image: todo-backend   # Declares which image to use
-    build: .              # Declares where to build if image is not found
-    ports:                # Declares the ports to publish
+  app:
+    image: todo-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
       - 3000:3000
+    container_name: todo-backend-app
