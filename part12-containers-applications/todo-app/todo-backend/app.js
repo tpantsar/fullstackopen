@@ -18,4 +18,6 @@ app.use(express.json())
 app.use('/', indexRouter)
 app.use('/todos', todosRouter)
 
+console.log('App started on port:', process.env.PORT)
+
 module.exports = app
