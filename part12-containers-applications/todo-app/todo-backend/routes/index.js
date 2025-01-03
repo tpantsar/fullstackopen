@@ -18,11 +18,16 @@ router.get('/', async (req, res) => {
 
 /* GET statistics data. */
 router.get('/statistics', async (req, res) => {
-  const addedTodos = (await redis.getAsync('added_todos')) || 0
+  try {
+    const addedTodos = (await redis.getAsync('added_todos')) || 0
 
-  res.send({
-    addedTodos,
-  })
+    res.send({
+      addedTodos,
+    })
+  } catch (err) {
+    console.error('Error fetching data from Redis', err)
+    res.status(500).send('Internal Server Error')
+  }
 })
 
 module.exports = router
