@@ -1,3 +1,11 @@
+## .env
+
+```
+PORT=3000
+MONGO_URL=mongodb://the_username:the_password@localhost:3456/the_database
+REDIS_URL=redis://localhost:6379
+```
+
 # Express application
 
 Install dependencies with `npm install`
