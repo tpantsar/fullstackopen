@@ -4,7 +4,9 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node . .
 
-RUN npm ci --only=production
+RUN npm ci --omit=dev
+
+EXPOSE 3000
 
 ENV DEBUG=todo-backend:*
 

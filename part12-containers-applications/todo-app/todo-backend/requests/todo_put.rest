@@ -1,0 +1,6 @@
+PUT http://localhost:3000/todos/676d44d5c0e8691f40470f4e
+Content-Type: application/json
+
+{
+    "text": "Buy bananas",
+}

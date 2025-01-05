@@ -4,13 +4,6 @@ const router = express.Router()
 
 const redis = require('../redis')
 
-/* GET statistics data. */
-router.get('/statistics', async (_, res) => {
-  redis.getAsync('added_todos').then((addedTodos) => {
-    res.send({ added_todos: addedTodos })
-  })
-})
-
 /* GET todos listing. */
 router.get('/', async (_, res) => {
   const todos = await Todo.find({})
@@ -25,9 +18,7 @@ router.post('/', async (req, res) => {
   })
 
   redis.getAsync('added_todos').then((addedTodos) => {
-    const newCount = (parseInt(addedTodos) || 0) + 1
-    redis.setAsync('added_todos', newCount)
-    res.send(todo)
+    redis.setAsync('added_todos', Number(addedTodos) + 1)
   })
 })
 
