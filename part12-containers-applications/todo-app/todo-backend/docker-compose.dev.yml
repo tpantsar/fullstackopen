@@ -1,5 +1,6 @@
 services:
   mongo:
+    container_name: todo-backend-mongo
     image: mongo
     ports:
       - 3456:27017
@@ -10,19 +11,19 @@ services:
     volumes:
       - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - mongo_data:/data/db
-    container_name: todo-backend-mongo
 
   redis:
+    container_name: todo-backend-redis
     image: redis
     ports:
       - 6379:6379
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - ./redis_data:/data
-    container_name: todo-backend-redis
 
   server:
-    image: todo-backend-server
+    container_name: todo-backend-server
+    image: server
     build:
       context: .
     ports:
@@ -33,7 +34,7 @@ services:
       - REDIS_URL=redis://redis:6379
     volumes:
       - ./:/usr/src/app
-    container_name: todo-backend-server
 
 volumes:
   mongo_data:
+  redis_data:

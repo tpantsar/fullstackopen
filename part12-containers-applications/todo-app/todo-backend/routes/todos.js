@@ -18,7 +18,8 @@ router.post('/', async (req, res) => {
   })
 
   redis.getAsync('added_todos').then((addedTodos) => {
-    redis.setAsync('added_todos', Number(addedTodos) + 1)
+    redis.setAsync('added_todos', parseInt(addedTodos || 0) + 1)
+    res.send(todo)
   })
 })
 
