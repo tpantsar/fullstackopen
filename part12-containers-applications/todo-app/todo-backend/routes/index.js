@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 router.get('/statistics', async (_, res) => {
   console.log('GET /statistics')
   redis.getAsync('added_todos').then((addedTodos) => {
-    res.send({ added_todos: addedTodos })
+    res.send({ added_todos: addedTodos || 0 })
   })
 })
 
