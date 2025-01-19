@@ -1,0 +1,12 @@
+FROM node:20
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+# npm install in development mode instead of npm ci
+# since we need to install devDependencies
+RUN npm install
+
+# use --host to expose the server to the network
+CMD ["npm", "run", "dev", "--", "--host"]
