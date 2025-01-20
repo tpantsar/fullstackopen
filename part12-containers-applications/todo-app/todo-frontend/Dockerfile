@@ -11,6 +11,10 @@ RUN npm ci --omit=dev
 
 RUN npm run build
 
+# build stage for testing
+FROM build-stage AS test-stage
+RUN CI=true npm test
+
 # This is a new stage, everything before this is gone, except for the files that we want to COPY
 FROM nginx:1.25-alpine
 
@@ -22,4 +26,4 @@ COPY --from=build-stage /usr/src/app/dist /usr/share/nginx/html
 # in the CMD in order for nginx to stay in the foreground, so that Docker can track the process properly
 # (otherwise your container will stop immediately after starting)!
 # https://hub.docker.com/_/nginx
-# CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
