@@ -7,7 +7,7 @@ COPY --chown=node:node . .
 
 ENV VITE_BACKEND_URL=http://localhost:3000
 
-RUN npm ci --omit=dev
+RUN npm install
 
 RUN npm run build
 
