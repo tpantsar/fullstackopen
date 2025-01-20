@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import React from 'react'
 
 const Todo = ({ todo, deleteTodo, completeTodo }) => {
   const onClickDelete = (todo) => () => {
