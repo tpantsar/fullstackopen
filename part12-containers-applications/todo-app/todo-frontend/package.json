@@ -8,6 +8,7 @@
     "build": "vite build",
     "docker-dev": "docker compose -f docker-compose.dev.yml up",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "prettier": "^3.4.2",
     "vite": "^5.2.0"
   }
 }
