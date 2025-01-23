@@ -1,7 +1,7 @@
 services:
   mongo:
-    container_name: todo-backend-mongo
     image: mongo
+    container_name: todo-backend-mongo
     ports:
       - 3456:27017
     environment:
@@ -13,8 +13,8 @@ services:
       - mongo_data:/data/db
 
   redis:
-    container_name: todo-backend-redis
     image: redis
+    container_name: todo-backend-redis
     ports:
       - 6379:6379
     command: ["redis-server", "--appendonly", "yes"]
@@ -22,8 +22,8 @@ services:
       - ./redis_data:/data
 
   server:
-    container_name: todo-backend-server
     image: server
+    container_name: todo-backend-server
     build:
       context: .
       dockerfile: Dockerfile.dev

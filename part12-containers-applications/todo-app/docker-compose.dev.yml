@@ -1,0 +1,23 @@
+services:
+  app:
+    image: todo-frontend-dev
+    container_name: todo-frontend-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/usr/src/app # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
+    ports:
+      - 5173:5173
+  debug-helper:
+    image: busybox
+
+  nginx:
+    image: nginx:1.20.1
+    container_name: reverse-proxy
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on:
+      - app # wait for the frontend container to be started
