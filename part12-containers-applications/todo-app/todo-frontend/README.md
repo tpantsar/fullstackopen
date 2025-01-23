@@ -1,4 +1,4 @@
-# React application
+## React application
 
 This application is created with [Vite](https://vitest.dev/).
 
@@ -12,12 +12,16 @@ You can build static files for production release with `npm run build`
 
 Use env VITE_BACKEND_URL to set where the backend for this application is
 
-# Docker Container
+## Docker Container (development)
 
 ```bash
-$ docker build -t todo-frontend-web .
+docker build -f ./Dockerfile.dev -t todo-frontend-dev .
+docker run --name todo-frontend-dev -d -p 5173:5173 todo-frontend-dev
+```
 
-$ docker run --name todo-frontend -d todo-frontend-web
+## Docker Container (production)
 
-$ docker run --name todo-frontend -d -p 8080:80 todo-frontend-web
+```bash
+docker build -t todo-frontend-prod .
+docker run --name todo-frontend-prod -d -p 8080:80 todo-frontend-prod
 ```
