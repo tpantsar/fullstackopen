@@ -1,7 +1,7 @@
 services:
   app:
-    container_name: todo-frontend-dev
     image: todo-frontend-dev
+    container_name: todo-frontend-dev
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -9,6 +9,3 @@ services:
       - ./:/usr/src/app # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
     ports:
       - 5173:5173
-
-volumes:
-  nginx_data:

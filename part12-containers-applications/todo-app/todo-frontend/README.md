@@ -19,6 +19,18 @@ docker build -f ./Dockerfile.dev -t todo-frontend-dev .
 docker run --name todo-frontend-dev -d -p 5173:5173 todo-frontend-dev
 ```
 
+```bash
+docker run -p 5173:5173 -v "$(pwd):/usr/src/app/" todo-frontend-dev
+```
+
+### Installing new dependencies:
+
+```bash
+docker exec todo-frontend-dev npm install axios
+```
+
+OR: add it to the package.json and run `docker build` again.
+
 ## Docker Container (production)
 
 ```bash
