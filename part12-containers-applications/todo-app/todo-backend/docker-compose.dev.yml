@@ -26,6 +26,7 @@ services:
     image: server
     build:
       context: .
+      dockerfile: Dockerfile.dev
     ports:
       - 3000:3000
     command: ["npm", "run", "dev"] # Overwrite the CMD in Dockerfile
