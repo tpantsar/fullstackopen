@@ -20,10 +20,11 @@ docker run --name todo-frontend-dev -d -p 5173:5173 todo-frontend-dev
 ```
 
 ```bash
+docker compose -f docker-compose.dev.yml up
 docker run -p 5173:5173 -v "$(pwd):/usr/src/app/" todo-frontend-dev
 ```
 
-### Installing new dependencies:
+### Installing new dependencies to container:
 
 ```bash
 docker exec todo-frontend-dev npm install axios
