@@ -24,6 +24,14 @@ docker compose -f docker-compose.dev.yml up
 docker run -p 5173:5173 -v "$(pwd):/usr/src/app/" todo-frontend-dev
 ```
 
+- Busybox:
+- Flag `-O -` outputs the response to the stdout
+- remove-orphans flag removes the orphan containers (duplicates)
+
+```bash
+docker compose -f docker-compose.dev.yml run --remove-orphans debug-helper wget -O - http://app:5173
+```
+
 ### Installing new dependencies to container:
 
 ```bash

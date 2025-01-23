@@ -8,6 +8,7 @@
     "build": "vite build",
     "test": "vitest run",
     "docker-dev": "docker compose -f docker-compose.dev.yml up",
+    "docker-debug": "docker compose -f docker-compose.dev.yml run --remove-orphans debug-helper wget -O - http://app:5173",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "preview": "vite preview"
