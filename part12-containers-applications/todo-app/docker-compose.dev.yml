@@ -1,14 +1,26 @@
 services:
-  app:
+  backend:
+    image: todo-backend-dev
+    container_name: todo-backend-dev
+    build:
+      context: ./todo-backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./todo-backend:/usr/src/app # Build volume in the backend directory
+    environment:
+      - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
+      - REDIS_URL=redis://redis:6379
+
+  frontend:
     image: todo-frontend-dev
     container_name: todo-frontend-dev
     build:
-      context: .
+      context: ./todo-frontend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./:/usr/src/app # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
-    ports:
-      - 5173:5173
+      - ./todo-frontend:/usr/src/app # Build volume in the frontend directory
+    environment:
+      - VITE_BACKEND_URL=http://localhost:3000/api
   debug-helper:
     image: busybox
 
@@ -20,4 +32,5 @@ services:
     ports:
       - 8080:80
     depends_on:
-      - app # wait for the frontend container to be started
+      - frontend # wait for the frontend container to be started
+      - backend # wait for the backend container to be started
