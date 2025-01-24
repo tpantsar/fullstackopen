@@ -3,7 +3,7 @@ services:
     image: mongo
     container_name: mongo
     ports:
-      - 3456:27017
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
@@ -26,7 +26,7 @@ services:
     container_name: todo-backend-dev
     build:
       context: ./todo-backend
-      dockerfile: Dockerfile.dev
+      dockerfile: dev.Dockerfile
     ports:
       - 3000:3000
     environment:
@@ -43,19 +43,19 @@ services:
     container_name: todo-frontend-dev
     build:
       context: ./todo-frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: dev.Dockerfile
     ports:
       - 5173:5173
     volumes:
       - ./todo-frontend:/usr/src/app # Build volume in the frontend directory
     environment:
       - PORT=5173
-      - VITE_BACKEND_URL=http://localhost:3000
+      - VITE_BACKEND_URL=http://localhost:3000/api
     depends_on:
       - backend
 
   nginx:
-    image: nginx:1.20.1
+    image: nginx
     container_name: reverse-proxy
     volumes:
       - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
@@ -64,7 +64,3 @@ services:
     depends_on: # Wait for the backend and frontend to be ready
       - backend
       - frontend
-
-volumes:
-  mongo_data:
-  redis_data:

@@ -1,7 +1,11 @@
 import Todo from './Todo'
 import PropTypes from 'prop-types'
 
-const TodoList = ({ todos, deleteTodo, completeTodo }) => {
+const TodoList = ({ todos = [], deleteTodo, completeTodo }) => {
+  if (!Array.isArray(todos)) {
+    return null
+  }
+
   return (
     <>
       {todos

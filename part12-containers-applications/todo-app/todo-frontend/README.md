@@ -15,8 +15,9 @@ Use env VITE_BACKEND_URL to set where the backend for this application is
 ## Docker Container (development)
 
 ```bash
-docker build -f ./Dockerfile.dev -t todo-frontend-dev .
+docker build -f ./dev.Dockerfile -t todo-frontend-dev .
 docker run --name todo-frontend-dev -d -p 5173:5173 todo-frontend-dev
+docker run --rm -it -p 5173:5173 todo-frontend-dev bash
 ```
 
 ```bash

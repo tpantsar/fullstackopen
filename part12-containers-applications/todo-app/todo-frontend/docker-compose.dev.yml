@@ -4,7 +4,7 @@ services:
     container_name: todo-frontend-dev
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: dev.Dockerfile
     volumes:
       - ./:/usr/src/app # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
     ports:
