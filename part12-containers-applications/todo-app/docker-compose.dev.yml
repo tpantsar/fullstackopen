@@ -1,15 +1,42 @@
 services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes:
+      - ./todo-backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./todo-backend/mongo_data:/data/db
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./todo-backend/redis_data:/data
+
   backend:
     image: todo-backend-dev
     container_name: todo-backend-dev
     build:
       context: ./todo-backend
       dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
     volumes:
       - ./todo-backend:/usr/src/app # Build volume in the backend directory
     environment:
       - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
       - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
 
   frontend:
     image: todo-frontend-dev
@@ -17,12 +44,15 @@ services:
     build:
       context: ./todo-frontend
       dockerfile: Dockerfile.dev
+    ports:
+      - 5173:5173
     volumes:
       - ./todo-frontend:/usr/src/app # Build volume in the frontend directory
     environment:
-      - VITE_BACKEND_URL=http://localhost:3000/api
-  debug-helper:
-    image: busybox
+      - VITE_BACKEND_URL=/api/
+      - PORT=5173
+    depends_on:
+      - backend
 
   nginx:
     image: nginx:1.20.1
@@ -31,6 +61,10 @@ services:
       - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 8080:80
-    depends_on:
-      - frontend # wait for the frontend container to be started
-      - backend # wait for the backend container to be started
+    depends_on: # Wait for the backend and frontend to be ready
+      - backend
+      - frontend
+
+volumes:
+  mongo_data:
+  redis_data:
