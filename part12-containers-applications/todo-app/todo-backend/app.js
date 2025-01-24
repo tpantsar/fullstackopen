@@ -3,8 +3,9 @@ const logger = require('morgan')
 const cors = require('cors')
 
 // Load environment variables
-require('dotenv').config()
+// require('dotenv').config()
 
+const config = require('./util/config')
 const indexRouter = require('./routes/index')
 const todosRouter = require('./routes/todos')
 
@@ -18,6 +19,6 @@ app.use(express.json())
 app.use('/', indexRouter)
 app.use('/todos', todosRouter)
 
-console.log('App started on port:', process.env.PORT)
+console.log('App started on port:', config.PORT)
 
 module.exports = app

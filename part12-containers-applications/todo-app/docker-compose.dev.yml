@@ -9,7 +9,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: the_database
     volumes:
-      - ./todo-backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - ./todo-backend/mongo_data:/data/db
 
   redis:
@@ -29,11 +29,11 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 3000:3000
-    volumes:
-      - ./todo-backend:/usr/src/app # Build volume in the backend directory
     environment:
       - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
       - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./todo-backend:/usr/src/app # Build volume in the backend directory
     depends_on:
       - mongo
       - redis
@@ -49,8 +49,8 @@ services:
     volumes:
       - ./todo-frontend:/usr/src/app # Build volume in the frontend directory
     environment:
-      - VITE_BACKEND_URL=/api/
       - PORT=5173
+      - VITE_BACKEND_URL=http://localhost:3000
     depends_on:
       - backend
 

@@ -29,7 +29,6 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 3000:3000
-    command: ["npm", "run", "dev"] # Overwrite the CMD in Dockerfile
     environment:
       - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
       - REDIS_URL=redis://redis:6379
