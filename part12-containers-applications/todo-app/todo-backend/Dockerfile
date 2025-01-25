@@ -1,14 +1,14 @@
-FROM node:20
+FROM node:22
 
 WORKDIR /usr/src/app
 
 COPY --chown=node:node . .
 
-RUN npm ci --omit=dev
+ENV DEBUG=todo-backend:*
+
+RUN npm ci --only=production
 
 EXPOSE 3000
-
-ENV DEBUG=todo-backend:*
 
 USER node
 

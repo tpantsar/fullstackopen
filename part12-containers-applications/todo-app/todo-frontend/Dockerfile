@@ -1,11 +1,11 @@
 # The first FROM is now a stage called build-stage
-FROM node:20 AS build-stage 
+FROM node:22 AS build-stage 
 
 WORKDIR /usr/src/app
 
 COPY --chown=node:node . .
 
-ENV VITE_BACKEND_URL=http://localhost:3000
+ENV VITE_BACKEND_URL=http://localhost:3000/api
 
 RUN npm ci --only=production
 
