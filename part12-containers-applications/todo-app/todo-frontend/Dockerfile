@@ -7,16 +7,13 @@ COPY . .
 
 ENV VITE_BACKEND_URL=http://localhost:8080/api
 
-RUN npm ci
-
-# build stage for testing
-FROM build-stage AS test-stage
-RUN CI=true npm test
-
-RUN npm run build
+RUN \
+    npm ci &&\
+    npm run build &&\
+    npm run test
 
 # This is a new stage, everything before this is gone, except for the files that we want to COPY
-FROM nginx:1.20.1
+FROM nginx:1.25-alpine
 
 # COPY the directory dist from the build-stage to /usr/share/nginx/html
 # The target location here was found from the Docker hub page
