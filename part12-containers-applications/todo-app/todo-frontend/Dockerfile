@@ -7,6 +7,8 @@ COPY --chown=node:node . .
 
 ENV VITE_BACKEND_URL=http://localhost:8080/api/
 
+EXPOSE 5173
+
 RUN npm ci --only=production
 
 # build stage for testing

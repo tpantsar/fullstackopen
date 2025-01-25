@@ -27,6 +27,8 @@ services:
     build:
       context: ./todo-backend
       dockerfile: Dockerfile
+    ports:
+      - 3000:3000
     environment:
       - NODE_ENV=production
       - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
@@ -43,16 +45,18 @@ services:
     build:
       context: ./todo-frontend
       dockerfile: Dockerfile
-    volumes:
-      - ./todo-frontend:/usr/src/app
+    ports:
+      - 5173:5173
     environment:
       - NODE_ENV=production
-      - VITE_BACKEND_URL=http://localhost:8080/api
+      - VITE_BACKEND_URL=http://localhost:8080/api/
+    volumes:
+      - ./todo-frontend:/usr/src/app
     depends_on:
       - backend
 
   nginx:
-    image: nginx
+    image: nginx:1.20.1
     container_name: reverse-proxy
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
