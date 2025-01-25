@@ -19,7 +19,6 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.8",
@@ -34,8 +33,5 @@
     "prettier": "^3.4.2",
     "vite": "^6.0.11",
     "vitest": "^3.0.4"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.32.0"
   }
 }
