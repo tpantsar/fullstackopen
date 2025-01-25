@@ -50,7 +50,7 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=5173
-      - VITE_BACKEND_URL=http://localhost:8080/api/
+      - VITE_BACKEND_URL=http://localhost:8080/api
     volumes:
       - ./todo-frontend:/usr/src/app # Build volume in the frontend directory
     depends_on:
