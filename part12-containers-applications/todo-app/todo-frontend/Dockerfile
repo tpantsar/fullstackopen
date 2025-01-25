@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node . .
 
-ENV VITE_BACKEND_URL=http://localhost:3000/api
+ENV VITE_BACKEND_URL=http://localhost:8080/api/
 
 RUN npm ci --only=production
 
