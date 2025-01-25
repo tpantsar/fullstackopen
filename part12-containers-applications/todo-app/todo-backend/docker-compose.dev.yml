@@ -13,7 +13,7 @@ services:
       - mongo_data:/data/db
 
   redis:
-    image: redis
+    image: redis:alpine
     container_name: todo-backend-redis
     ports:
       - 6379:6379

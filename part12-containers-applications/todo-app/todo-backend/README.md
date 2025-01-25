@@ -25,3 +25,23 @@ The application has /todos crud which requires a MongoDB. Pass connection url wi
 # Redis
 
 Pass connection url with env `REDIS_URL`
+
+## Debugging:
+
+```bash
+docker exec -it todo-backend-dev bash
+docker run --rm -it todo-backend-dev bash
+
+npm list --depth=0
+```
+
+```bash
+docker logs todo-backend-dev
+docker logs todo-frontend-dev
+```
+
+### If Docker caches old dependencies, clear the cache:
+
+```bash
+docker-compose -f docker-compose.dev.yml build --no-cache
+```
