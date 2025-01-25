@@ -23,7 +23,7 @@ services:
 
   backend:
     image: todo-backend
-    container_name: todo-backend
+    container_name: backend-prod
     build:
       context: ./todo-backend
       dockerfile: Dockerfile
@@ -41,7 +41,7 @@ services:
 
   frontend:
     image: todo-frontend
-    container_name: todo-frontend
+    container_name: frontend-prod
     build:
       context: ./todo-frontend
       dockerfile: Dockerfile
@@ -69,3 +69,4 @@ services:
 
   debug-helper:
     image: busybox
+    container_name: debug-helper

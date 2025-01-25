@@ -33,5 +33,9 @@
     "prettier": "^3.4.2",
     "vite": "^6.0.11",
     "vitest": "^3.0.4"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-arm64-gnu": "^4.32.0",
+    "@rollup/rollup-linux-x64-gnu": "^4.32.0"
   }
 }

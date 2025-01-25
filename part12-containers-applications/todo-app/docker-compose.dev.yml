@@ -23,7 +23,7 @@ services:
 
   backend:
     image: todo-backend-dev
-    container_name: todo-backend-dev
+    container_name: backend-dev
     build:
       context: ./todo-backend
       dockerfile: dev.Dockerfile
@@ -41,7 +41,7 @@ services:
 
   frontend:
     image: todo-frontend-dev
-    container_name: todo-frontend-dev
+    container_name: frontend-dev
     build:
       context: ./todo-frontend
       dockerfile: dev.Dockerfile
@@ -66,3 +66,7 @@ services:
     depends_on: # Wait for the backend and frontend to be ready
       - backend
       - frontend
+
+  debug-helper:
+    image: busybox
+    container_name: debug-helper
