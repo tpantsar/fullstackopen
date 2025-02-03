@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const config = require('../utils/config')
-const User = require('../models/user')
+const { User } = require('../mongo')
 
 loginRouter.post('/', async (request, response) => {
   const { username, password } = request.body

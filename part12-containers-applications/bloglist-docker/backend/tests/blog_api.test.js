@@ -8,8 +8,8 @@ const bcrypt = require('bcrypt')
 
 const helper = require('./test_helper')
 
-const Blog = require('../models/blog')
-const User = require('../models/user')
+const Blog = require('../mongo/models/blog')
+const { User } = require('../mongo')
 
 // Reset the initial state of the database before each test
 beforeEach(async () => {
