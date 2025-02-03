@@ -1,3 +1,4 @@
-.vite/
 .gitignore
 .prettierrc
+.vite/
+node_modules
