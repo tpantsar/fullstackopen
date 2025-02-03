@@ -33,7 +33,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - NODE_ENV=production
-      - VITE_BACKEND_URL="http://localhost:8080/api"
+      - VITE_BACKEND_URL=http://localhost:8080/api
     volumes:
       - ./frontend/:/usr/src/app
       - /usr/src/app/node_modules # https://stackoverflow.com/a/60194067

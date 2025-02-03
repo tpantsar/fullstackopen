@@ -37,7 +37,7 @@ services:
       - 5173:5173
     environment:
       - NODE_ENV=development
-      - VITE_BACKEND_URL="http://localhost:8080/api"
+      - VITE_BACKEND_URL=http://localhost:8080/api
     volumes:
       - ./frontend/:/usr/src/app # Build volume in the frontend directory
       - /usr/src/app/node_modules # https://stackoverflow.com/a/60194067
