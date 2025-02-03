@@ -1,3 +1,4 @@
 .gitignore
 .prettierrc
 mongo_data/
+node_modules
