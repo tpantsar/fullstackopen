@@ -2,38 +2,38 @@
   "name": "bloglist-backend",
   "version": "1.0.0",
   "description": "Bloglist backend app",
+  "author": "tpantsar",
+  "license": "ISC",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node index.js",
-    "start:test": "cross-env NODE_ENV=test node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test node --test --test-concurrency=1",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "start:test": "cross-env NODE_ENV=test node index.js",
     "test-only": "cross-env NODE_ENV=test node --test --test-concurrency=1 --test-only",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.js\"",
     "merge": "git checkout main && git pull && git merge dev && npm run format && git push origin main && git checkout dev && git add ."
   },
-  "author": "tpantsar",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
-    "mongoose": "^8.7.0",
-    "node": "^20.18.0"
+    "mongoose": "^8.9.6",
+    "node": "^23.7.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@stylistic/eslint-plugin-js": "^2.8.0",
+    "@eslint/js": "^9.19.0",
+    "@stylistic/eslint-plugin-js": "^3.0.1",
     "cross-env": "^7.0.3",
-    "eslint": "^9.11.1",
-    "globals": "^15.9.0",
-    "nodemon": "^3.1.7",
-    "prettier": "^3.3.3",
+    "eslint": "^9.19.0",
+    "globals": "^15.14.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
     "supertest": "^7.0.0"
   }
 }
