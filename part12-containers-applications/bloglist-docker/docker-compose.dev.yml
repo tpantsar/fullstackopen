@@ -1,0 +1,52 @@
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes:
+      - ./backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./backend/mongo_data:/data/db
+
+  backend:
+    image: bloglist-backend-dev
+    container_name: bloglist-backend-dev
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3001
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./backend/:/usr/src/app # Build volume in the backend directory
+    depends_on:
+      - mongo
+
+  frontend:
+    image: bloglist-frontend-dev
+    container_name: bloglist-frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5173:5173
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend/:/usr/src/app # Build volume in the frontend directory
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on: # Wait for the backend and frontend to be ready
+      - backend
+      - frontend
