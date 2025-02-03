@@ -1,8 +1,8 @@
-import axios from 'axios'
-const baseUrl = '/api/users'
+import apiClient from './apiClient'
+const resourceUrl = '/users'
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
+  const request = apiClient.get(resourceUrl)
   return request.then((response) => response.data)
 }
 
