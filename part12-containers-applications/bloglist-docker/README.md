@@ -1,3 +1,13 @@
+## node_volumes directory needs to be added as a volume in docker-compose.yml
+
+https://stackoverflow.com/a/60194067
+
+```bash
+volumes:
+  - ./:/usr/src/app
+  - /usr/src/app/node_modules
+```
+
 ## Docker development container:
 
 `-d` flag is used to run the container in the background.
