@@ -23,6 +23,7 @@ services:
       - NODE_ENV=development
     volumes:
       - ./backend/:/usr/src/app # Build volume in the backend directory
+      - ./backend/node_modules:/usr/src/app/node_modules # Cache node_modules
     depends_on:
       - mongo
 
@@ -38,6 +39,7 @@ services:
       - NODE_ENV=development
     volumes:
       - ./frontend/:/usr/src/app # Build volume in the frontend directory
+      - ./frontend/node_modules:/usr/src/app/node_modules # Cache node_modules
     depends_on:
       - backend
 
@@ -50,3 +52,7 @@ services:
     depends_on: # Wait for the backend and frontend to be ready
       - backend
       - frontend
+
+volumes:
+  mongo_data:
+  node_modules:
