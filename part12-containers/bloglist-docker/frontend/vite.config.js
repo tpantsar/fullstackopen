@@ -9,9 +9,9 @@ export default defineConfig({
   },
   proxy: {
     '/api': {
-      target: 'http://localhost:3001',
+      target: 'http://localhost:3001/', // API requests are routed to the backend server
       changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/api/, ''),
+      secure: false, // Avoid HTTPS issues in local development
     },
   },
   test: {

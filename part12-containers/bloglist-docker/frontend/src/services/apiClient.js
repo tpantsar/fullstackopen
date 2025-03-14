@@ -1,15 +1,14 @@
 import axios from 'axios'
 
-// Used in local development
-const localBaseURL = 'http://localhost:3001/api'
+const { VITE_BACKEND_URL } = import.meta.env
 
-// Used in production
-// VITE_BACKEND_URL='http://localhost:8080/api'
-
+// Use the baseURL '/api' from the .env file
+// If the .env file does not exist, use the default URL for local development
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL || localBaseURL,
+  baseURL: VITE_BACKEND_URL || 'http://localhost:3001/api',
 })
 
+console.log('VITE_BACKEND_URL:', VITE_BACKEND_URL)
 console.log('apiClient.baseURL:', apiClient.defaults.baseURL)
 
 export default apiClient
