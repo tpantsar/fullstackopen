@@ -1,0 +1,6 @@
+// https://fullstackopen.com/en/part9/first_steps_with_type_script#setting-things-up
+{
+  "compilerOptions": {
+    "noImplicitAny": true // makes it mandatory to have types for all variables used.
+  }
+}
