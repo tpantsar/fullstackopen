@@ -23,25 +23,24 @@ const parseExerciseArguments = (args: string[]): Exercises => {
   if (args.length < 4) throw new Error("Not enough arguments");
 
   const targetValue = Number(args[2]);
-  if (isNaN(targetValue) || targetValue < 0) {
-    throw new Error("Invalid target value, must be a positive number");
-  }
-
   const exerciseHours = args.slice(3).map((arg) => {
-    const hours = Number(arg);
-    if (isNaN(hours)) {
-      throw new Error(`Invalid number in exercise hours: ${arg}`);
+    const num = Number(arg);
+    if (isNaN(num) || num < 0) {
+      throw new Error("All exercise hours must be non-negative numbers");
     }
-    return hours;
+    return num;
   });
 
-  if (exerciseHours.length < 1) {
-    throw new Error("At least one exercise hour must be provided");
+  log("targetValue", targetValue);
+  log("exerciseHours", exerciseHours);
+
+  if (isNaN(targetValue) || targetValue < 0) {
+    throw new Error("Target value must be a non-negative number");
   }
 
   return {
-    exerciseHours,
     targetValue,
+    exerciseHours,
   };
 };
 
@@ -55,21 +54,13 @@ const calculateStatistics = ({ exerciseHours, targetValue }: Exercises) => {
     exerciseHours.reduce((acc, curr) => acc + curr, 0) / periodLength;
   const success = average >= targetValue;
   const rating =
-    average >= targetValue
-      ? 3
-      : average >= targetValue / 2
-      ? 2
-      : average >= targetValue / 3
-      ? 1
-      : 0;
+    average >= targetValue ? 3 : average >= targetValue / 2 ? 2 : 1;
   const ratingDescription =
     rating === 3
       ? "Great job! You're doing amazing!"
       : rating === 2
       ? "You're doing well. Keep it up!"
-      : rating === 1
-      ? "Not too bad but could be better."
-      : "You can do better.";
+      : "Not too bad but could be better.";
 
   const metrics: ExerciseMetrics = {
     periodLength,
