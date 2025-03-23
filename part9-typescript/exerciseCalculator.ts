@@ -13,51 +13,66 @@ interface Exercises {
   targetValue: number;
 }
 
+const log = (paramName: string, value: unknown) => {
+  if (process.env.NODE_ENV === "development") {
+    console.log(paramName, value);
+  }
+};
+
 const parseExerciseArguments = (args: string[]): Exercises => {
   if (args.length < 4) throw new Error("Not enough arguments");
   if (args.length > 4) throw new Error("Too many arguments");
 
-  const exercisesArray: Exercises["exerciseHours"] = args
-    .slice(2)
-    .map((arg) => Number(arg))
-    .filter((arg) => !isNaN(arg));
+  let exerciseHours: number[] = [];
+  try {
+    exerciseHours = JSON.parse(args[2]) as number[];
+    log("exerciseHours", exerciseHours);
+  } catch (error) {
+    console.error("Failed to parse JSON:", error);
+  }
+
   const targetValue = Number(args[3]);
+  log("targetValue", targetValue);
 
-  console.log(exercisesArray, targetValue);
-
-  if (exercisesArray.length < 1 || targetValue < 0) {
+  if (exerciseHours.length < 1 || targetValue < 0) {
     throw new Error("Exercise hours and target value should be provided");
   }
 
-  if (!isNaN(targetValue) && exercisesArray.every((arg) => !isNaN(arg))) {
+  if (!isNaN(targetValue) && exerciseHours.every((arg) => !isNaN(arg))) {
     return {
-      exerciseHours: exercisesArray,
-      targetValue: targetValue,
+      exerciseHours,
+      targetValue,
     };
   } else {
     throw new Error("Provided values were not numbers!");
   }
 };
 
-const calculateStatistics = (
-  exerciseHours: Exercises["exerciseHours"],
-  targetValue: Exercises["targetValue"]
-) => {
+const calculateStatistics = ({ exerciseHours, targetValue }: Exercises) => {
+  log("exerciseHours", exerciseHours);
+  log("targetValue", targetValue);
+
   const periodLength = exerciseHours.length;
   const trainingDays = exerciseHours.filter((hours) => hours > 0).length;
   const average =
     exerciseHours.reduce((acc, curr) => acc + curr, 0) / periodLength;
   const success = average >= targetValue;
   const rating =
-    average >= targetValue ? 3 : average >= targetValue / 2 ? 2 : 1;
+    average >= targetValue
+      ? 3
+      : average >= targetValue / 2
+      ? 2
+      : average >= targetValue / 3
+      ? 1
+      : 0;
   const ratingDescription =
     rating === 3
-      ? "Great job!"
+      ? "Great job! You're doing amazing!"
       : rating === 2
-      ? "You're doing well but could be better"
+      ? "You're doing well. Keep it up!"
       : rating === 1
-      ? "Not too bad but could be better"
-      : "You should try harder";
+      ? "Not too bad but could be better."
+      : "You can do better.";
 
   const metrics: ExerciseMetrics = {
     periodLength,
@@ -74,7 +89,7 @@ const calculateStatistics = (
 
 try {
   const { exerciseHours, targetValue } = parseExerciseArguments(process.argv);
-  calculateStatistics(exerciseHours, targetValue);
+  calculateStatistics({ exerciseHours, targetValue });
 } catch (error: unknown) {
   let errorMessage = "Something bad happened.";
   if (error instanceof Error) {
