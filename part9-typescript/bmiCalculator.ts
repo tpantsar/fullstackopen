@@ -4,7 +4,7 @@ interface BodyMetrics {
   massKg: number;
 }
 
-const parseArguments = (args: string[]): BodyMetrics => {
+const parseBmiArguments = (args: string[]): BodyMetrics => {
   if (args.length < 4) throw new Error("Not enough arguments");
   if (args.length > 4) throw new Error("Too many arguments");
 
@@ -62,7 +62,7 @@ const calculateBmi = (heightCm: number, massKg: number, printText: string) => {
 };
 
 try {
-  const { heightCm, massKg } = parseArguments(process.argv);
+  const { heightCm, massKg } = parseBmiArguments(process.argv);
   calculateBmi(
     heightCm,
     massKg,
