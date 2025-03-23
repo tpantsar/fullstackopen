@@ -21,31 +21,28 @@ const log = (paramName: string, value: unknown) => {
 
 const parseExerciseArguments = (args: string[]): Exercises => {
   if (args.length < 4) throw new Error("Not enough arguments");
-  if (args.length > 4) throw new Error("Too many arguments");
 
-  let exerciseHours: number[] = [];
-  try {
-    exerciseHours = JSON.parse(args[2]) as number[];
-    log("exerciseHours", exerciseHours);
-  } catch (error) {
-    console.error("Failed to parse JSON:", error);
+  const targetValue = Number(args[2]);
+  if (isNaN(targetValue) || targetValue < 0) {
+    throw new Error("Invalid target value, must be a positive number");
   }
 
-  const targetValue = Number(args[3]);
-  log("targetValue", targetValue);
+  const exerciseHours = args.slice(3).map((arg) => {
+    const hours = Number(arg);
+    if (isNaN(hours)) {
+      throw new Error(`Invalid number in exercise hours: ${arg}`);
+    }
+    return hours;
+  });
 
-  if (exerciseHours.length < 1 || targetValue < 0) {
-    throw new Error("Exercise hours and target value should be provided");
+  if (exerciseHours.length < 1) {
+    throw new Error("At least one exercise hour must be provided");
   }
 
-  if (!isNaN(targetValue) && exerciseHours.every((arg) => !isNaN(arg))) {
-    return {
-      exerciseHours,
-      targetValue,
-    };
-  } else {
-    throw new Error("Provided values were not numbers!");
-  }
+  return {
+    exerciseHours,
+    targetValue,
+  };
 };
 
 const calculateStatistics = ({ exerciseHours, targetValue }: Exercises) => {
