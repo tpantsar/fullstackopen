@@ -1,7 +1,9 @@
 import express, { Request, Response } from "express";
 import { calculateBmi } from "./bmiCalculator";
+import { calculateStatistics } from "./exerciseCalculator";
 
 const app = express();
+app.use(express.json());
 
 app.get("/hello", (_req: Request, res: Response) => {
   res.send("Hello Full Stack!");
@@ -32,6 +34,37 @@ app.get("/bmi", (req: Request, res: Response) => {
     res.json(response);
   } catch (e: unknown) {
     res.status(500).json({ error: "Internal server error", msg: e });
+  }
+});
+
+app.post("/exercises", (req: Request, res: Response) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { daily_exercises, target } = req.body;
+
+  console.log("daily_exercises:", daily_exercises);
+  console.log("target:", target);
+
+  if (!daily_exercises || !target) {
+    res.status(400).json({ error: "parameters missing" });
+  } else if (!Array.isArray(daily_exercises) || isNaN(Number(target))) {
+    res.status(400).json({ error: "malformatted parameters" });
+  }
+
+  const dailyExercises =
+    Array.isArray(daily_exercises) &&
+    daily_exercises.every((e) => typeof e === "number")
+      ? daily_exercises
+      : null;
+
+  if (!dailyExercises) {
+    res.status(400).json({ error: "malformatted parameters" });
+  }
+
+  if (dailyExercises) {
+    const result = calculateStatistics(dailyExercises, Number(target));
+    res.json(result);
+  } else {
+    res.status(400).json({ error: "malformatted parameters" });
   }
 });
 

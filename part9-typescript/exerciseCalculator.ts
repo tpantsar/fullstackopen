@@ -1,4 +1,4 @@
-interface ExerciseMetrics {
+interface ExerciseStats {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -8,7 +8,7 @@ interface ExerciseMetrics {
   average: number;
 }
 
-interface Exercises {
+interface ExerciseArguments {
   exerciseHours: number[];
   targetValue: number;
 }
@@ -19,7 +19,7 @@ const log = (paramName: string, value: unknown) => {
   }
 };
 
-const parseExerciseArguments = (args: string[]): Exercises => {
+const parseExerciseArguments = (args: string[]): ExerciseArguments => {
   if (args.length < 4) throw new Error("Not enough arguments");
 
   const targetValue = Number(args[2]);
@@ -44,7 +44,10 @@ const parseExerciseArguments = (args: string[]): Exercises => {
   };
 };
 
-const calculateStatistics = ({ exerciseHours, targetValue }: Exercises) => {
+export const calculateStatistics = (
+  exerciseHours: number[],
+  targetValue: number
+) => {
   log("exerciseHours", exerciseHours);
   log("targetValue", targetValue);
 
@@ -62,7 +65,7 @@ const calculateStatistics = ({ exerciseHours, targetValue }: Exercises) => {
       ? "You're doing well. Keep it up!"
       : "Not too bad but could be better.";
 
-  const metrics: ExerciseMetrics = {
+  const statistics: ExerciseStats = {
     periodLength,
     trainingDays,
     success,
@@ -72,16 +75,20 @@ const calculateStatistics = ({ exerciseHours, targetValue }: Exercises) => {
     average,
   };
 
-  console.log(metrics);
+  return statistics;
 };
 
-try {
-  const { exerciseHours, targetValue } = parseExerciseArguments(process.argv);
-  calculateStatistics({ exerciseHours, targetValue });
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+// Check if the module is run directly from the command line with npm run calculateExercises
+// If so, parse the arguments and calculate the exercise statistics
+if (require.main === module) {
+  try {
+    const { exerciseHours, targetValue } = parseExerciseArguments(process.argv);
+    console.log(calculateStatistics(exerciseHours, targetValue));
+  } catch (error: unknown) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
