@@ -30,8 +30,8 @@ app.get("/bmi", (req: Request, res: Response) => {
     };
 
     res.json(response);
-  } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+  } catch (e: unknown) {
+    res.status(500).json({ error: "Internal server error", msg: e });
   }
 });
 

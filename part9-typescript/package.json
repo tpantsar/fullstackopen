@@ -3,27 +3,32 @@
   "version": "1.0.0",
   "description": "Full Stack Open, part9 Typescript",
   "main": "index.js",
+  "author": "tpantsar",
+  "license": "ISC",
   "keywords": [
     "typescript",
     "fullstackopen"
   ],
-  "author": "tpantsar",
-  "license": "ISC",
   "scripts": {
     "dev": "ts-node-dev index.ts",
     "start": "ts-node index.ts",
     "ts-node": "ts-node",
     "calculateBmi": "ts-node bmiCalculator.ts",
     "calculateExercises": "ts-node exerciseCalculator.ts",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "express": "^4.21.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
     "@types/express": "^5.0.1",
+    "eslint": "^9.23.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.27.0"
   }
 }

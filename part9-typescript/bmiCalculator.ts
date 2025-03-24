@@ -1,6 +1,3 @@
-// tests whether the module is main, i.e. it is run directly from the command line
-require.main === module;
-
 // https://en.wikipedia.org/wiki/Body_mass_index#Categories
 interface BodyMetrics {
   heightCm: number;
@@ -71,16 +68,22 @@ export const calculateBmi = (heightCm: number, massKg: number): BMIResponse => {
   return { bmiValue, bmiCategory };
 };
 
-try {
-  const { heightCm, massKg } = parseBmiArguments(process.argv);
-  const { bmiValue, bmiCategory } = calculateBmi(heightCm, massKg);
+// Check if the module is run directly from the command line with npm run calculateBmi
+// If so, parse the arguments and calculate the BMI
+if (require.main === module) {
+  try {
+    const { heightCm, massKg } = parseBmiArguments(process.argv);
+    const { bmiValue, bmiCategory } = calculateBmi(heightCm, massKg);
 
-  console.log(`BMI for ${heightCm} cm and ${massKg} kg person is: ${bmiValue}`);
-  console.log(bmiCategory);
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+    console.log(
+      `BMI for ${heightCm} cm and ${massKg} kg person is: ${bmiValue}`
+    );
+    console.log(bmiCategory);
+  } catch (error: unknown) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
