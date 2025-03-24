@@ -1,7 +1,15 @@
+// tests whether the module is main, i.e. it is run directly from the command line
+require.main === module;
+
 // https://en.wikipedia.org/wiki/Body_mass_index#Categories
 interface BodyMetrics {
   heightCm: number;
   massKg: number;
+}
+
+interface BMIResponse {
+  bmiValue: number;
+  bmiCategory: string;
 }
 
 const parseBmiArguments = (args: string[]): BodyMetrics => {
@@ -35,39 +43,40 @@ const parseBmiArguments = (args: string[]): BodyMetrics => {
 };
 
 // Prints the corresponding BMI category based on the BMI value
-const printBmiCategory = (bmi: number): void => {
+const getBmiCategory = (bmi: number): string => {
   if (bmi < 16.0) {
-    console.log("Underweight (Severe thinness)");
+    return "Underweight (Severe thinness)";
   } else if (bmi >= 16.0 && bmi <= 16.9) {
-    console.log("Underweight (Moderate thinness)");
+    return "Underweight (Moderate thinness)";
   } else if (bmi >= 17.0 && bmi <= 18.4) {
-    console.log("Underweight (Mild thinness)");
+    return "Underweight (Mild thinness)";
   } else if (bmi >= 18.5 && bmi <= 24.9) {
-    console.log("Normal range");
+    return "Normal range";
   } else if (bmi >= 25 && bmi <= 29.9) {
-    console.log("Overweight (Pre-obese)");
+    return "Overweight (Pre-obese)";
   } else if (bmi >= 30 && bmi <= 34.9) {
-    console.log("Obese (Class I)");
+    return "Obese (Class I)";
   } else if (bmi >= 35 && bmi <= 39.9) {
-    console.log("Obese (Class II)");
+    return "Obese (Class II)";
   } else {
-    console.log("Obese (Class III)");
+    return "Obese (Class III)";
   }
 };
 
-const calculateBmi = (heightCm: number, massKg: number, printText: string) => {
-  const bmi: number = Number((massKg / Math.pow(heightCm / 100, 2)).toFixed(2));
-  console.log(printText, bmi);
-  printBmiCategory(bmi);
+export const calculateBmi = (heightCm: number, massKg: number): BMIResponse => {
+  const bmiValue: number = Number(
+    (massKg / Math.pow(heightCm / 100, 2)).toFixed(2)
+  );
+  const bmiCategory = getBmiCategory(bmiValue);
+  return { bmiValue, bmiCategory };
 };
 
 try {
   const { heightCm, massKg } = parseBmiArguments(process.argv);
-  calculateBmi(
-    heightCm,
-    massKg,
-    `BMI for ${heightCm} cm and ${massKg} kg person is:`
-  );
+  const { bmiValue, bmiCategory } = calculateBmi(heightCm, massKg);
+
+  console.log(`BMI for ${heightCm} cm and ${massKg} kg person is: ${bmiValue}`);
+  console.log(bmiCategory);
 } catch (error: unknown) {
   let errorMessage = "Something bad happened.";
   if (error instanceof Error) {
