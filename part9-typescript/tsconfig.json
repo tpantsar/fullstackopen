@@ -1,6 +1,7 @@
 // https://fullstackopen.com/en/part9/first_steps_with_type_script#setting-things-up
 {
   "compilerOptions": {
+    "outDir": "./build/",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,

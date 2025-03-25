@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "dev": "ts-node-dev index.ts",
-    "start": "ts-node index.ts",
+    "start": "node build/index.js",
+    "build": "tsc",
     "ts-node": "ts-node",
     "calculateBmi": "ts-node bmiCalculator.ts",
     "calculateExercises": "ts-node exerciseCalculator.ts",

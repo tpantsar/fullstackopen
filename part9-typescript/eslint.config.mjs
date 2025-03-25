@@ -4,6 +4,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config({
   files: ["**/*.ts"],
+  ignores: ["build/*", "node_modules/*", "dist/*"],
   extends: [
     eslint.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,
