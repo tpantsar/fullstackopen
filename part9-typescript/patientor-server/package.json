@@ -4,7 +4,7 @@
   "description": "Patientor express server",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "start": "node build/index.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
