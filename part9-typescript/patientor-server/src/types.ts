@@ -14,11 +14,11 @@ export interface PatientEntry {
 }
 
 export enum Gender {
-  Male = "male",
-  Female = "female",
-  Other = "other",
+  Male = 'male',
+  Female = 'female',
+  Other = 'other',
 }
 
-export type NewPatientEntry = Omit<PatientEntry, "id">;
+export type NewPatientEntry = Omit<PatientEntry, 'id'>;
 
-export type SensitivePatientEntry = Omit<PatientEntry, "ssn">;
+export type SensitivePatientEntry = Omit<PatientEntry, 'ssn'>;
