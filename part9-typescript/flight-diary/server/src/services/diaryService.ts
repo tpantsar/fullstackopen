@@ -1,4 +1,4 @@
-import diaries from '../../data/entries';
+import diaries from '../data/entries';
 import { DiaryEntry, NewDiaryEntry, NonSensitiveDiaryEntry } from '../types';
 
 const getEntries = (): DiaryEntry[] => {
