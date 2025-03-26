@@ -1,9 +1,9 @@
-import express, { Request, Response, NextFunction } from 'express';
-import diaryService from '../services/diaryService';
-import { NewEntrySchema } from '../utils';
-
+import express, { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
-import { NewDiaryEntry, DiaryEntry } from '../types';
+
+import diaryService from '../services/diaryService';
+import { DiaryEntry, NewDiaryEntry } from '../types';
+import { NewEntrySchema } from '../utils';
 
 const router = express.Router();
 

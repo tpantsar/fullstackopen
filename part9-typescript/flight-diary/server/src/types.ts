@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { NewEntrySchema } from './utils';
 
 export enum Weather {
