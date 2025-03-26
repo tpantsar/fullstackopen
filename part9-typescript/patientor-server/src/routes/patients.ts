@@ -7,7 +7,7 @@ import toNewPatientEntry from '../utils';
 const router = express.Router();
 
 router.get('/', (_req, res: Response<SensitivePatientEntry[]>) => {
-  res.send(patientService.getSentitiveEntries());
+  res.send(patientService.getNonSentitiveEntries());
 });
 
 router.post('/', (req: Request, res: Response) => {

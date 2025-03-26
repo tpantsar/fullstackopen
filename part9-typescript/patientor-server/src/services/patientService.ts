@@ -10,7 +10,7 @@ const getEntries = (): PatientEntry[] => {
 
 // https://fullstackopen.com/en/part9/typing_an_express_app#utility-types
 // Omit the SSN field from the patient data
-const getSentitiveEntries = (): SensitivePatientEntry[] => {
+const getNonSentitiveEntries = (): SensitivePatientEntry[] => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
@@ -32,6 +32,6 @@ const addPatient = (entry: NewPatientEntry): PatientEntry => {
 
 export default {
   getEntries,
-  getSentitiveEntries,
+  getNonSentitiveEntries,
   addPatient,
 };
