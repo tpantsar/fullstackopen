@@ -3,8 +3,11 @@ export interface CoursePartBase {
   exerciseCount: number;
 }
 
-export interface CoursePartBasic extends CoursePartBase {
+export interface CoursePartDescription extends CoursePartBase {
   description: string;
+}
+
+export interface CoursePartBasic extends CoursePartDescription {
   kind: 'basic';
 }
 
@@ -13,8 +16,7 @@ export interface CoursePartGroup extends CoursePartBase {
   kind: 'group';
 }
 
-export interface CoursePartBackground extends CoursePartBase {
-  description: string;
+export interface CoursePartBackground extends CoursePartDescription {
   backgroundMaterial: string;
   kind: 'background';
 }

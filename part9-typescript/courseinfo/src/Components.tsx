@@ -1,16 +1,38 @@
+import { CoursePart } from './types';
+
+/**
+ * Helper function for exhaustive type checking
+ */
+const assertNever = (value: never): never => {
+  throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
+};
+
 export const Header = ({ name }: { name: string }) => {
   return <h2>{name}</h2>;
 };
 
-export const Content = ({ parts }: { parts: Array<{ name: string; exerciseCount: number }> }) => (
-  <div>
-    {parts.map(({ name, exerciseCount }, index) => (
-      <Part key={index} name={name} exercises={exerciseCount} />
-    ))}
-  </div>
-);
+export const Content = ({ parts }: { parts: CoursePart[] }) => {
+  return (
+    <>
+      {parts.map((part) => {
+        console.log(part);
+        const { name, exerciseCount } = part;
+        switch (part.kind) {
+          case 'basic':
+            return <Part key={name} name={name} exercises={exerciseCount} />;
+          case 'group':
+            return <Part key={name} name={name} exercises={exerciseCount} />;
+          case 'background':
+            return <Part key={name} name={name} exercises={exerciseCount} />;
+          default:
+            return assertNever(part);
+        }
+      })}
+    </>
+  );
+};
 
-export const Total = ({ parts }: { parts: Array<{ name: string; exerciseCount: number }> }) => {
+export const Total = ({ parts }: { parts: CoursePart[] }) => {
   return (
     <p>
       <strong>Total exercises:</strong>{' '}
