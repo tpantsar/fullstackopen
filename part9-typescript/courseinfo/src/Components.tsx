@@ -13,40 +13,70 @@ export const Header = ({ name }: { name: string }) => {
 
 export const Content = ({ courseParts }: { courseParts: CoursePart[] }) => {
   return (
-    <>
-      {courseParts.map((part) => {
-        console.log(part);
-        const { name, exerciseCount } = part;
-        switch (part.kind) {
-          case 'basic':
-            return <Part key={name} name={name} exercises={exerciseCount} />;
-          case 'group':
-            return <Part key={name} name={name} exercises={exerciseCount} />;
-          case 'background':
-            return <Part key={name} name={name} exercises={exerciseCount} />;
-          case 'special':
-            return <Part key={name} name={name} exercises={exerciseCount} />;
-          default:
-            return assertNever(part);
-        }
-      })}
-    </>
+    <div>
+      {courseParts.map((part) => (
+        <Part key={part.name} coursePart={part} />
+      ))}
+    </div>
   );
+};
+
+const Part = ({ coursePart }: { coursePart: CoursePart }) => {
+  console.log(coursePart);
+  switch (coursePart.kind) {
+    case 'basic':
+      return (
+        <div className="part">
+          <h3>
+            {coursePart.name} {coursePart.exerciseCount}
+          </h3>
+          <p>{coursePart.description}</p>
+        </div>
+      );
+    case 'group':
+      return (
+        <div className="part">
+          <h3>
+            {coursePart.name} {coursePart.exerciseCount}
+          </h3>
+          <p>Project exercises: {coursePart.groupProjectCount}</p>
+        </div>
+      );
+    case 'background':
+      return (
+        <div className="part">
+          <h3>
+            {coursePart.name} {coursePart.exerciseCount}
+          </h3>
+          <p>{coursePart.description}</p>
+          <p>
+            See:{' '}
+            <a href={coursePart.backgroundMaterial} target="_blank" rel="noreferrer">
+              {coursePart.backgroundMaterial}
+            </a>
+          </p>
+        </div>
+      );
+    case 'special':
+      return (
+        <div className="part">
+          <h3>
+            {coursePart.name} {coursePart.exerciseCount}
+          </h3>
+          <p>{coursePart.description}</p>
+          <p>Required skills: {coursePart.requirements.join(', ')}</p>
+        </div>
+      );
+    default:
+      return assertNever(coursePart);
+  }
 };
 
 export const Total = ({ courseParts }: { courseParts: CoursePart[] }) => {
   return (
-    <p>
+    <h2>
       <strong>Total exercises:</strong>{' '}
       {courseParts.map((part) => part.exerciseCount).reduce((a, b) => a + b, 0)}
-    </p>
-  );
-};
-
-const Part = ({ name, exercises }: { name: string; exercises: number }) => {
-  return (
-    <p>
-      {name} {exercises}
-    </p>
+    </h2>
   );
 };
