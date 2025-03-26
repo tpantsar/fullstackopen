@@ -11,10 +11,10 @@ export const Header = ({ name }: { name: string }) => {
   return <h2>{name}</h2>;
 };
 
-export const Content = ({ parts }: { parts: CoursePart[] }) => {
+export const Content = ({ courseParts }: { courseParts: CoursePart[] }) => {
   return (
     <>
-      {parts.map((part) => {
+      {courseParts.map((part) => {
         console.log(part);
         const { name, exerciseCount } = part;
         switch (part.kind) {
@@ -24,6 +24,8 @@ export const Content = ({ parts }: { parts: CoursePart[] }) => {
             return <Part key={name} name={name} exercises={exerciseCount} />;
           case 'background':
             return <Part key={name} name={name} exercises={exerciseCount} />;
+          case 'special':
+            return <Part key={name} name={name} exercises={exerciseCount} />;
           default:
             return assertNever(part);
         }
@@ -32,11 +34,11 @@ export const Content = ({ parts }: { parts: CoursePart[] }) => {
   );
 };
 
-export const Total = ({ parts }: { parts: CoursePart[] }) => {
+export const Total = ({ courseParts }: { courseParts: CoursePart[] }) => {
   return (
     <p>
       <strong>Total exercises:</strong>{' '}
-      {parts.map((part) => part.exerciseCount).reduce((a, b) => a + b, 0)}
+      {courseParts.map((part) => part.exerciseCount).reduce((a, b) => a + b, 0)}
     </p>
   );
 };
