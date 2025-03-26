@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { newEntrySchema } from './utils';
+import { NewEntrySchema } from './utils';
 
 export interface Diagnosis {
   code: string;
@@ -23,7 +23,7 @@ export enum Gender {
 }
 
 // infer the type from schema
-export type NewPatientEntry = z.infer<typeof newEntrySchema>;
+export type NewPatientEntry = z.infer<typeof NewEntrySchema>;
 
 // remove sensitive data, like SSN
 export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn'>;
