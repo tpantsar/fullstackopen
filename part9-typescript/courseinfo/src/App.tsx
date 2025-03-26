@@ -1,46 +1,39 @@
-const Header = ({ name }: { name: string }) => {
-  return <h2>{name}</h2>;
-};
-
-const Content = ({ parts }: { parts: Array<{ name: string; exerciseCount: number }> }) => (
-  <div>
-    {parts.map(({ name, exerciseCount }, index) => (
-      <Part key={index} name={name} exercises={exerciseCount} />
-    ))}
-  </div>
-);
-
-const Part = ({ name, exercises }: { name: string; exercises: number }) => {
-  return (
-    <p>
-      {name} {exercises}
-    </p>
-  );
-};
-
-const Total = ({ parts }: { parts: Array<{ name: string; exerciseCount: number }> }) => {
-  return (
-    <p>
-      <strong>Total exercises:</strong>{' '}
-      {parts.map((part) => part.exerciseCount).reduce((a, b) => a + b, 0)}
-    </p>
-  );
-};
+import { Content, Header, Total } from './Components';
+import { CoursePart } from './types';
 
 const App = () => {
   const courseName = 'Half Stack application development';
-  const courseParts = [
+  const courseParts: CoursePart[] = [
     {
       name: 'Fundamentals',
       exerciseCount: 10,
+      description: 'This is an awesome course part',
+      kind: 'basic',
     },
     {
       name: 'Using props to pass data',
       exerciseCount: 7,
+      groupProjectCount: 3,
+      kind: 'group',
+    },
+    {
+      name: 'Basics of type Narrowing',
+      exerciseCount: 7,
+      description: 'How to go from unknown to string',
+      kind: 'basic',
     },
     {
       name: 'Deeper type usage',
       exerciseCount: 14,
+      description: 'Confusing description',
+      backgroundMaterial: 'https://type-level-typescript.com/template-literal-types',
+      kind: 'background',
+    },
+    {
+      name: 'TypeScript in frontend',
+      exerciseCount: 10,
+      description: 'a hard part',
+      kind: 'basic',
     },
   ];
 
