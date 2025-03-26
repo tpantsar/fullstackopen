@@ -1,0 +1,33 @@
+{
+  "name": "flights-server",
+  "version": "1.0.0",
+  "description": "Flight diary express server",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "dev": "ts-node-dev src/index.ts",
+    "start": "node build/src/index.js",
+    "build": "tsc -b",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "eslint": "^9.23.0",
+    "prettier": "^3.5.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.28.0"
+  }
+}
