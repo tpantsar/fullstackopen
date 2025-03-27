@@ -15,7 +15,7 @@ export enum Visibility {
 
 export interface Diary {
   id: number;
-  date: string;
+  date: string | undefined;
   weather: Weather;
   visibility: Visibility;
   comment?: string;

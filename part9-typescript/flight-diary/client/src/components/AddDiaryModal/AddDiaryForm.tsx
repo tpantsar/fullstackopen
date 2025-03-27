@@ -7,6 +7,10 @@ import {
   SelectChangeEvent,
   TextField,
 } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { SyntheticEvent, useState } from 'react';
 
@@ -38,7 +42,7 @@ const visibilityOptions: VisibilityOption[] = Object.values(Visibility).map((v) 
 }));
 
 const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState<Dayjs | null>(dayjs().startOf('day'));
   const [weather, setWeather] = useState(Weather.Sunny);
   const [visibility, setVisibility] = useState(Visibility.Great);
   const [comment, setComment] = useState('');
@@ -67,8 +71,12 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
 
   const addFlight = (event: SyntheticEvent) => {
     event.preventDefault();
+
+    const dateAsString = date?.format('YYYY-MM-DD');
+    console.log('dateAsString:', dateAsString);
+
     onSubmit({
-      date,
+      date: dateAsString,
       weather,
       visibility,
       comment,
@@ -78,13 +86,9 @@ const AddDiaryForm = ({ onCancel, onSubmit }: Props) => {
   return (
     <div>
       <form onSubmit={addFlight}>
-        <TextField
-          label="Date"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={date}
-          onChange={({ target }) => setDate(target.value)}
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker label="Date" value={date} onChange={(newDate) => setDate(newDate)} />
+        </LocalizationProvider>
 
         <InputLabel style={{ marginTop: 20 }}>Weather</InputLabel>
         <Select label="Weather" fullWidth value={weather} onChange={onWeatherChange}>
