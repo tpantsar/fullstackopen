@@ -44,7 +44,11 @@ const DiaryList = ({ diaries, setDiaries }: Props) => {
           console.error(message);
           setError(message);
         } else {
-          setError('Unrecognized axios error');
+          const message = e.response?.data.error[0].message;
+          const status = e.response?.status;
+          const errorMsg = `${status}: ${message}`;
+          console.log(errorMsg, e);
+          setError(errorMsg);
         }
       } else {
         console.error('Unknown error', e);
