@@ -13,6 +13,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.diary-item {
+  border: 1px solid #868cff;
+  border-radius: 12px;
+  padding: 0.5em;
+  width: 20rem;
+  margin-top: 1em;
+  text-align: center;
+}
+
+p {
+  margin: 0.5em 0;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -34,6 +47,10 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+h2 {
+  text-align: center;
 }
 
 button {
