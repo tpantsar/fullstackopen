@@ -13,10 +13,12 @@ export enum Visibility {
   Poor = 'poor',
 }
 
-export interface DiaryEntry {
+export interface Diary {
   id: number;
   date: string;
   weather: Weather;
   visibility: Visibility;
   comment?: string;
 }
+
+export type DiaryFormValues = Omit<Diary, 'id' | 'entries'>;
