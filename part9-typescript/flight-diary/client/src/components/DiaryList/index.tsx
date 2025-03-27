@@ -57,7 +57,7 @@ const DiaryList = ({ diaries, setDiaries }: Props) => {
     <div className="App">
       <Box>
         <Typography align="center" variant="h6">
-          Previous flights
+          Previous flights: {diaries.length}
         </Typography>
       </Box>
       <Button variant="contained" onClick={() => openModal()}>
