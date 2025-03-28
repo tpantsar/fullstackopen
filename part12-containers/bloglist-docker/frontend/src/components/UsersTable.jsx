@@ -49,5 +49,5 @@ const UsersTable = ({ users }) => {
   )
 }
 
-UsersTable.displayName = 'LatestWeatherTable'
+UsersTable.displayName = 'UsersTable'
 export default UsersTable

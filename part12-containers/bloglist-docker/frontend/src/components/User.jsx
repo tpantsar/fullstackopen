@@ -65,5 +65,5 @@ const User = ({ user }) => {
   )
 }
 
-User.displayName = 'LatestWeatherTable'
+User.displayName = 'User'
 export default User
