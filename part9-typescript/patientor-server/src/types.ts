@@ -7,8 +7,13 @@ export interface Diagnosis {
   latin?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Entry {}
+export interface Entry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnosis['code']>;
+}
 
 export interface PatientEntry {
   id: string;
