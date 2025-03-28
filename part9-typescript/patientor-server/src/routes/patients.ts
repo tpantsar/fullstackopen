@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import patientService from '../services/patientService';
 import { NewPatientEntry, NonSensitivePatientEntry, PatientEntry } from '../types';
-import { NewEntrySchema } from '../utils';
+import { NewPatientSchema } from '../utils';
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.get('/:id', (req: Request, res: Response<PatientEntry | { error: string }
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
   try {
-    NewEntrySchema.parse(req.body);
+    NewPatientSchema.parse(req.body);
     console.log('req.body:', req.body);
     next();
   } catch (error: unknown) {
@@ -41,8 +41,8 @@ router.post(
   '/',
   newPatientParser,
   (req: Request<unknown, unknown, NewPatientEntry>, res: Response<PatientEntry>) => {
-    const addedEntry = patientService.addPatient(req.body);
-    res.json(addedEntry);
+    const addedPatient = patientService.addPatient(req.body);
+    res.json(addedPatient);
   },
 );
 
