@@ -7,11 +7,26 @@ export interface Diagnosis {
   latin?: string;
 }
 
+interface SickLeave {
+  startDate: string;
+  endDate: string;
+}
+
+interface Discharge {
+  date: string;
+  criteria: string;
+}
+
 export interface Entry {
   id: string;
   description: string;
   date: string;
   specialist: string;
+  type?: string;
+  employerName?: string;
+  healthCheckRating?: number;
+  discharge?: Discharge;
+  sickLeave?: SickLeave;
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
