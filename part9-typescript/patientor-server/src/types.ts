@@ -39,12 +39,6 @@ interface BaseEntry {
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
-export enum PatientEntryType {
-  HealthCheck = 'HealthCheck',
-  Hospital = 'Hospital',
-  OccupationalHealthcare = 'OccupationalHealthcare',
-}
-
 interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
   healthCheckRating: HealthCheckRating;
@@ -71,16 +65,10 @@ export interface PatientEntry {
   entries: Entry[];
 }
 
-// Define special omit for unions
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
-
-export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
-
-// Define Entry without the 'id' property
-export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
 // infer the type from schema
-export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
+export type NewPatient = z.infer<typeof NewPatientSchema>;
 
 // remove sensitive data, like SSN and patient journal entries
 export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn' | 'entries'>;

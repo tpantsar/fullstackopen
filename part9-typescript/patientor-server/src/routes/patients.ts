@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import patientService from '../services/patientService';
-import { NewPatientEntry, NonSensitivePatientEntry, PatientEntry } from '../types';
+import { NewPatient, NonSensitivePatientEntry, PatientEntry } from '../types';
 import { NewPatientSchema } from '../utils';
 
 const router = express.Router();
@@ -40,7 +40,7 @@ const errorMiddleware = (error: unknown, _req: Request, res: Response, next: Nex
 router.post(
   '/',
   newPatientParser,
-  (req: Request<unknown, unknown, NewPatientEntry>, res: Response<PatientEntry>) => {
+  (req: Request<unknown, unknown, NewPatient>, res: Response<PatientEntry>) => {
     const addedPatient = patientService.addPatient(req.body);
     res.json(addedPatient);
   },
