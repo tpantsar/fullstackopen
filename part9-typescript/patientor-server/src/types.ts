@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { NewPatientSchema } from './utils';
+import { ParamsDictionary } from 'express-serve-static-core';
 
 export interface Diagnosis {
   code: string;
@@ -65,10 +66,17 @@ export interface PatientEntry {
   entries: Entry[];
 }
 
-type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
+export interface NewPatientEntryParams extends ParamsDictionary {
+  id: string;
+}
+
+export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
 // infer the type from schema
 export type NewPatient = z.infer<typeof NewPatientSchema>;
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+export type NewPatientEntry = UnionOmit<Entry, 'id'>;
 
 // remove sensitive data, like SSN and patient journal entries
 export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn' | 'entries'>;
