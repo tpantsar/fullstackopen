@@ -2,7 +2,6 @@ POST http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667/ent
 Content-Type: application/json
 
 {
-  "id": "abdcdef0-1234-5678-9abc-def012345678",
   "type": "OccupationalHealthcare",
   "date": "2025-03-01",
   "description": "Patient mistakenly found himself in a nuclear plant waste site without protection gear. Very minor radiation poisoning.",
